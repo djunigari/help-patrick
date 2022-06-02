@@ -4,7 +4,7 @@ import { Community } from "../../atoms/communitiesAtom"
 import { Post } from "../../atoms/postsAtom"
 import { auth, firestore } from "../../firebase/clientApp"
 import usePosts from "../../hooks/usePosts"
-import PostItem from "./PostItem"
+import PostItem from "./PostItem/PostItem"
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { Stack } from "@chakra-ui/react"
 import PostLoader from "./PostLoader"

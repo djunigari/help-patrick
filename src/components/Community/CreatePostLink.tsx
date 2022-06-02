@@ -1,12 +1,11 @@
 import { Flex, Icon, Input } from "@chakra-ui/react"
 import { useRouter } from "next/router"
-import { FaReddit } from 'react-icons/fa'
 import { auth } from "../../firebase/clientApp"
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useSetRecoilState } from "recoil"
 import { authModalState } from "../../atoms/authModal"
 import { BsLink45Deg } from 'react-icons/bs'
-import { IoImageOutline } from 'react-icons/io5'
+import { IoDocumentText, IoImageOutline } from 'react-icons/io5'
 
 function CreatePostLink() {
     const router = useRouter()
@@ -22,7 +21,7 @@ function CreatePostLink() {
             return
         }
 
-        router.push(`/posts/register`)            
+        router.push(`/posts/register`)
     }
 
     return (
@@ -37,7 +36,7 @@ function CreatePostLink() {
             p={2}
             mb={4}
         >
-            <Icon as={FaReddit} fontSize={36} color='gray.300' mr={4} />
+            <Icon as={IoDocumentText} fontSize={36} color='gray.300' mr={4} />
             <Input
                 placeholder="Create Post"
                 fontSize='10pt'
