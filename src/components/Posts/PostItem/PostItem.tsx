@@ -1,22 +1,23 @@
-import { Alert, AlertIcon, Flex, Icon, Image, Skeleton, Spinner, Stack, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Flex, Icon, Image, Skeleton, Spacer, Spinner, Stack, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsWhatsapp } from "react-icons/bs";
 import { FaFacebookSquare } from "react-icons/fa";
 import { SiInstagram } from 'react-icons/si';
-import { Post } from "../../../atoms/postsAtom";
+import { Post } from "@atoms/postsAtom";
 import ContactButton from "./ContactButton";
 
 
 interface PostItemProps {
     post: Post
     userIsCreator: boolean
+    homePage?: boolean
     onDeletePost: (post: Post) => Promise<boolean>
     onSelectPost?: (post: Post) => void
 }
 
-function PostItem({ post, userIsCreator, onDeletePost, onSelectPost }: PostItemProps) {
+function PostItem({ post, userIsCreator, onDeletePost, onSelectPost, homePage }: PostItemProps) {
     const router = useRouter()
     const [loadingImage, setLoadingImage] = useState(true)
     const [loadingDelete, setLoadingDelete] = useState(false)
@@ -71,69 +72,85 @@ function PostItem({ post, userIsCreator, onDeletePost, onSelectPost }: PostItemP
                     )}
                     <Image
                         src={post.imageUrl}
+                        objectFit='cover'
+                        h={homePage ? '60' : 'unset'}
                         maxWidth='100%'
+                        maxHeight={{ base: '100px', md: '460px' }}
                         alt='Post Image'
                         display={loadingImage ? 'none' : 'unset'}
                         onLoad={() => setLoadingImage(false)}
                     />
                 </Flex>
             )}
-            <Flex direction='column' p={2}>
-                <Text fontSize='12pt' fontWeight={600}>
-                    {post.title}
-                </Text>
-                <Text fontSize='10pt'>
-                    {post.body}
-                </Text>
-            </Flex>
+            {!homePage && (
+                <>
+                    <Flex direction='column' p={2}>
+                        <Text fontSize='12pt' fontWeight={600}>
+                            {post.title}
+                        </Text>
+                        <Text fontSize='10pt'>
+                            {post.body}
+                        </Text>
+                    </Flex>
 
-            <Stack
-                direction='row'
-                spacing={1}
-                justify='flex-end'
-                mr={1}
-                mb={2}
-            >
-                <ContactButton
-                    icon={SiInstagram}
-                    color='red'
-                    displayName='@unknow'
-                    link='https://instagram.com'
-                />
-                <ContactButton
-                    icon={FaFacebookSquare}
-                    color='blue'
-                    displayName='@unknow'
-                    link='https://facebook.com'
-                />
-
-                <ContactButton
-                    icon={BsWhatsapp}
-                    color='green'
-                    displayName='080 5850 5050'
-                    link='https://facebook.com'
-                />
-
-                {userIsCreator && (
-                    <Flex
-                        align='center'
-                        p='8px 10px'
-                        borderRadius={4}
-                        _hover={{ bg: 'gray.200' }}
-                        cursor='pointer'
-                        onClick={handleDelete}
+                    <Stack
+                        direction='row'
+                        spacing={1}
+                        ml={1}
+                        mb={2}
                     >
-                        {loadingDelete ? (
-                            <Spinner size='sm' />
-                        ) : (
+                        {post.contact.instagram && (
+                            <ContactButton
+                                icon={SiInstagram}
+                                color='red'
+                                displayName={`@${post.contact.instagram}`}
+                                link={`https://instagram.com/${post.contact.instagram}`}
+                            />
+                        )}
+                        {post.contact.facebook && (
+                            <ContactButton
+                                icon={FaFacebookSquare}
+                                color='blue'
+                                displayName={`@${post.contact.facebook}`}
+                                link={`https://facebook.com/${post.contact.facebook}`}
+                            />
+                        )}
+
+                        {post.contact.phone && (
+                            <ContactButton
+                                icon={BsWhatsapp}
+                                color='green'
+                                displayName={post.contact.phone}
+                                link='https://whatsapp.com'
+                            />
+                        )}
+
+                        {userIsCreator && (
                             <>
-                                <Icon as={AiOutlineDelete} mr={2} />
-                                <Text fontSize='9pt'>Delete</Text>
+                                <Spacer />
+                                <Flex
+                                    mr={1}
+                                    align='center'
+                                    p='8px 10px'
+                                    borderRadius={4}
+                                    _hover={{ bg: 'gray.200' }}
+                                    cursor='pointer'
+                                    onClick={handleDelete}
+                                >
+                                    {loadingDelete ? (
+                                        <Spinner size='sm' />
+                                    ) : (
+                                        <>
+                                            <Icon as={AiOutlineDelete} mr={2} />
+                                            <Text fontSize='9pt'>Delete</Text>
+                                        </>
+                                    )}
+                                </Flex>
                             </>
                         )}
-                    </Flex>
-                )}
-            </Stack>
+                    </Stack>
+                </>
+            )}
         </Flex >
     )
 }

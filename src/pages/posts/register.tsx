@@ -7,7 +7,7 @@ import { IoDocumentText } from "react-icons/io5"
 
 function RegisterPostPage() {
     const [user] = useAuthState(auth)
-    
+
     return (
         <PageContent>
             <>
@@ -18,7 +18,7 @@ function RegisterPostPage() {
                 {user && <NewPostForm user={user} />}
             </>
             <>
-          
+
             </>
         </PageContent>
     )

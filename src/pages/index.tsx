@@ -1,5 +1,5 @@
 import { Post } from '@atoms/postsAtom'
-import { Stack } from '@chakra-ui/react'
+import { Grid, GridItem, Stack } from '@chakra-ui/react'
 import usePosts from '@hooks/usePosts'
 import { collection, getDocs, limit, orderBy, query } from 'firebase/firestore'
 import { GetServerSidePropsContext } from 'next'
@@ -43,21 +43,25 @@ function Home({ posts }: HomeProps) {
   return (
     <PageContent>
       <>
-        <CreatePostLink />
+        {user && (<CreatePostLink />)}
         {loading ? (
           <PostLoader />
         ) : (
-          <Stack>
+          <Grid templateColumns='repeat(3, 1fr)'>
             {postStateValue.posts.map(post => (
-              <PostItem
+              <GridItem
                 key={post.id}
-                post={post}
-                onSelectPost={onSelectPost}
-                onDeletePost={onDeletePost}
-                userIsCreator={user?.uid === post.creatorId}
-              />
+              >
+                <PostItem
+                  homePage
+                  post={post}
+                  onSelectPost={onSelectPost}
+                  onDeletePost={onDeletePost}
+                  userIsCreator={user?.uid === post.creatorId}
+                />
+              </GridItem>
             ))}
-          </Stack>
+          </Grid>
         )}
       </>
       <Stack spacing={5}>

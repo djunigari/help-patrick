@@ -1,9 +1,9 @@
 import { Flex, Icon, Input } from "@chakra-ui/react"
 import { useRouter } from "next/router"
-import { auth } from "../../firebase/clientApp"
+import { auth } from "@firebase/clientApp"
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useSetRecoilState } from "recoil"
-import { authModalState } from "../../atoms/authModal"
+import { authModalState } from "@atoms/authModal"
 import { BsLink45Deg } from 'react-icons/bs'
 import { IoDocumentText, IoImageOutline } from 'react-icons/io5'
 
@@ -34,11 +34,11 @@ function CreatePostLink() {
             border='1px solid'
             borderColor='gray.300'
             p={2}
-            mb={4}
+            mb={2}
         >
             <Icon as={IoDocumentText} fontSize={36} color='gray.300' mr={4} />
             <Input
-                placeholder="Create Post"
+                placeholder="Criar Post"
                 fontSize='10pt'
                 _placeholder={{ color: 'gray.500' }}
                 _hover={{
@@ -59,9 +59,6 @@ function CreatePostLink() {
                 mr={4}
                 onClick={onClick}
             />
-            <Icon as={IoImageOutline} fontSize={24} mr={4} color='gray.400' cursor='pointer' />
-            <Icon as={BsLink45Deg} fontSize={24} mr={4} color='gray.400' cursor='pointer' />
-
         </Flex>
     )
 }

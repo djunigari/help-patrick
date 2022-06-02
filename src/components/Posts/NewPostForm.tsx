@@ -18,7 +18,6 @@ function NewPostForm({ user }: NewPostFormProps) {
     const router = useRouter()
 
     const [contact, setContact] = useState<Contact>({
-        email: user.email!,
         phone: '',
         instagram: '',
         facebook: ''
@@ -26,7 +25,8 @@ function NewPostForm({ user }: NewPostFormProps) {
 
     const [textInputs, setTextInputs] = useState({
         title: '',
-        body: ''
+        body: '',
+        categoria: ''
     })
     const { onSelectFile, selectedFile, setSelectedFile } = useSelectFile()
     const [loading, setLoading] = useState(false)
@@ -41,6 +41,7 @@ function NewPostForm({ user }: NewPostFormProps) {
             title: textInputs.title,
             body: textInputs.body,
             contact,
+            categoria: textInputs.categoria,
             createAt: serverTimestamp() as Timestamp
         }
 
@@ -86,6 +87,8 @@ function NewPostForm({ user }: NewPostFormProps) {
                 />
                 <TextInput
                     textInputs={textInputs}
+                    contactInputs={contact}
+                    setContact={setContact}
                     handleCreatePost={handleCreatePost}
                     onChange={onTextChange}
                     loading={loading}

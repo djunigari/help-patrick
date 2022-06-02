@@ -10,10 +10,10 @@ export type Post = {
     imageUrl?: string
     contact: Contact
     createAt: Timestamp
+    categoria: string
 }
 
 export type Contact = {
-    email: string
     phone: string
     instagram: string
     facebook: string

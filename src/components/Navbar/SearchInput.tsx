@@ -13,7 +13,7 @@ function SearchInput({ user }: SearchInputProps) {
                     <SearchIcon color='gray.300' mb={1} />
                 </InputLeftElement>
                 <Input
-                    placeholder='Search Reddit'
+                    placeholder='Pesquisar por categoria'
                     fontSize='10pt'
                     _placeholder={{ color: 'gray.500' }}
                     _hover={{
