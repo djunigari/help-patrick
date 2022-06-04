@@ -74,7 +74,7 @@ function NewPostForm({ user }: NewPostFormProps) {
     return (
         <Flex direction='column' bg='white' borderRadius={4} mt={2}>
 
-            <CropperImage />
+            <CropperImage selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
 
             <Stack p={4} direction='column' spacing={4}>
 

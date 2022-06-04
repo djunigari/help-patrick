@@ -1,12 +1,12 @@
-import { Stack, Box, Button, Flex, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Text, Icon, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Icon, useDisclosure } from '@chakra-ui/react';
 import { getOrientation } from 'get-orientation/browser';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { Area } from "react-easy-crop/types";
 import { IoAddCircleSharp } from 'react-icons/io5';
 import { getCroppedImg, getRotatedImage } from './canvasUtils';
 import ImgDialog from './ImgDialog/ImgDialog';
-import MenuCropperProps from './MenuCropper'
+import MenuCropperProps from './MenuCropper';
 
 type tplotOptions = {
     [key: string]: number
@@ -25,7 +25,12 @@ function readFile(file: Blob): Promise<string | ArrayBuffer | null> {
     })
 }
 
-function CropperImage() {
+interface CropperImageProps {
+    selectedFiles: string[]
+    setSelectedFiles: (values: string[]) => void
+}
+
+function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
     const selectedFileRef = useRef<HTMLInputElement>(null)
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -36,10 +41,10 @@ function CropperImage() {
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
     const [croppedImage, setCroppedImage] = useState<string | null>(null)
 
-    const onCropComplete = useCallback(
+    const onCropComplete =
         (croppedArea: Area, croppedAreaPixels: Area) => {
             setCroppedAreaPixels(croppedAreaPixels)
-        }, [])
+        }
 
     const showCroppedImage = async () => {
         try {
@@ -48,7 +53,7 @@ function CropperImage() {
                 croppedAreaPixels!,
                 rotation
             )
-            console.log('donee', { croppedImage })
+
             setCroppedImage(croppedImage)
 
             onOpen()
@@ -71,6 +76,12 @@ function CropperImage() {
 
             setImageSrc(imageDataUrl as string)
         }
+    }
+
+    const addImage = () => {
+        if (croppedImage) setSelectedFiles([...selectedFiles, croppedImage])
+        setImageSrc(null)
+        onClose()
     }
 
     useEffect(() => {
@@ -110,6 +121,7 @@ function CropperImage() {
                         img={croppedImage as string}
                         isOpen={isOpen}
                         onClose={onClose}
+                        addImage={addImage}
                     />
                 </>
             ) : (

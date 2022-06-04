@@ -1,4 +1,5 @@
 import { Button, Img, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react'
+import useSelectFile from '@hooks/useSelectFile'
 import React from 'react'
 
 
@@ -6,9 +7,10 @@ interface ImgDialogProps {
     img: string
     isOpen: boolean
     onClose: () => void
+    addImage: () => void
 }
 
-function ImgDialog({ img, isOpen, onClose }: ImgDialogProps) {
+function ImgDialog({ img, isOpen, onClose, addImage }: ImgDialogProps) {
     return (
         <Modal
             isOpen={isOpen}
@@ -35,6 +37,7 @@ function ImgDialog({ img, isOpen, onClose }: ImgDialogProps) {
                         borderRadius='md'
                         bg='green'
                         _hover={{ bg: 'green.200' }}
+                        onClick={addImage}
                     >
                         Adicionar
                     </Button>
