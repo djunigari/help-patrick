@@ -19,12 +19,12 @@ function PageContent({ children }: PageContentProps) {
                 <Flex
                     direction='column'
                 >
-                    {children && children[1 as keyof typeof children]}
+                    {children && children[0 as keyof typeof children]}
                 </Flex>
                 <Flex
                     direction='column'
                 >
-                    {children && children[0 as keyof typeof children]}
+                    {children && children[1 as keyof typeof children]}
                 </Flex>
             </Stack>
         </Flex>
