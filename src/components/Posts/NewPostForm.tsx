@@ -1,11 +1,10 @@
 import { Contact, Post } from '@atoms/postsAtom'
 import { Alert, AlertIcon, Flex, Stack, Text } from '@chakra-ui/react'
 import { User } from 'firebase/auth'
-import { addDoc, collection, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore'
-import { getDownloadURL, ref, uploadString } from 'firebase/storage'
+import { addDoc, collection, deleteDoc, DocumentReference, serverTimestamp, Timestamp } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import { ChangeEvent, useState } from 'react'
-import { firestore, storage } from '../../firebase/clientApp'
+import { firestore } from '../../firebase/clientApp'
 import useSelectFile from '../../hooks/useSelectFile'
 import ImageUpload from './PostForm/ImageUpload'
 import TextInput from './PostForm/TextInput'
@@ -28,7 +27,7 @@ function NewPostForm({ user }: NewPostFormProps) {
         body: '',
         categoria: ''
     })
-    const { onSelectFile, selectedFile, setSelectedFile } = useSelectFile()
+    const { updateAllFiles, cleanFiles } = useSelectFile()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
@@ -46,26 +45,20 @@ function NewPostForm({ user }: NewPostFormProps) {
         }
 
         setLoading(true)
+        let postDocRef: DocumentReference | null = null
         try {
             //store the post in db
-            const postDocRef = await addDoc(collection(firestore, 'posts'), newPost)
+            postDocRef = await addDoc(collection(firestore, 'posts'), newPost)
 
-            //check for selectedFile
-            if (selectedFile) {
-                //store in storage => getDownloadUrl ( return imageUrl)
-                const imageRef = ref(storage, `posts/${postDocRef.id}/image`)
-                await uploadString(imageRef, selectedFile, 'data_url')
-                const downloadUrl = await getDownloadURL(imageRef)
-                //update post doc by adding imageUrl
-                await updateDoc(postDocRef, {
-                    imageUrl: downloadUrl
-                })
-            }
+            await updateAllFiles(postDocRef)
+
             router.back()
         } catch (error: any) {
             console.log('handleCreatePost error', error.message)
+            if (postDocRef) await deleteDoc(postDocRef)
             setError(true)
         }
+        cleanFiles()
         setLoading(false)
     }
 
@@ -80,11 +73,7 @@ function NewPostForm({ user }: NewPostFormProps) {
     return (
         <Flex direction='column' bg='white' borderRadius={4} mt={2}>
             <Stack p={4} direction='column' spacing={4}>
-                <ImageUpload
-                    selectedFile={selectedFile}
-                    onSelectImage={onSelectFile}
-                    setSelectedFile={setSelectedFile}
-                />
+                <ImageUpload />
                 <TextInput
                     textInputs={textInputs}
                     contactInputs={contact}

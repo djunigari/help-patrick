@@ -8,10 +8,12 @@ import "slick-carousel/slick/slick.css";
 
 interface CarouselProps {
     imageUrls: string[]
+    maxWidth?: string
+    maxHeight?: string
 }
 
 
-export default function Carousel({ imageUrls }: CarouselProps) {
+export default function Carousel({ imageUrls, maxHeight, maxWidth }: CarouselProps) {
     const slider = useRef<Slider>(null);
     const [index, setIndex] = useState<number>(0)
 
@@ -70,9 +72,10 @@ export default function Carousel({ imageUrls }: CarouselProps) {
                     <Image
                         key={index}
                         src={url}
-                        maxHeight='400px'
+                        maxWidth={maxWidth || '400px'}
+                        maxHeight={maxHeight || '400px'}
                         position="relative"
-                        fit='none'
+                        fit='cover'
                     />
                 ))}
             </Slider>
