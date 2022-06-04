@@ -4,10 +4,14 @@ import { ChangeEvent, useEffect, useRef } from "react"
 import { FaTrashAlt } from "react-icons/fa"
 import { IoAddCircleSharp } from "react-icons/io5"
 
+interface ImageUploadProps {
+    selectedFiles: string[]
+    setSelectedFiles: (values: string[]) => void
+    onSelectFile: (event: ChangeEvent<HTMLInputElement>) => void
+}
 
-function ImageUpload() {
+function ImageUpload({ selectedFiles, setSelectedFiles, onSelectFile }: ImageUploadProps) {
     const selectedFileRef = useRef<HTMLInputElement>(null)
-    const { selectedFiles, setSelectedFiles, onSelectFile } = useSelectFile()
 
     return (
         <Grid templateColumns='repeat(3, 1fr)' gap={1}>

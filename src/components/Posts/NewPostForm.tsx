@@ -27,7 +27,7 @@ function NewPostForm({ user }: NewPostFormProps) {
         body: '',
         categoria: ''
     })
-    const { updateAllFiles, cleanFiles } = useSelectFile()
+    const { selectedFiles, setSelectedFiles, onSelectFile, updateAllFiles, cleanFiles } = useSelectFile()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
@@ -73,7 +73,11 @@ function NewPostForm({ user }: NewPostFormProps) {
     return (
         <Flex direction='column' bg='white' borderRadius={4} mt={2}>
             <Stack p={4} direction='column' spacing={4}>
-                <ImageUpload />
+                <ImageUpload
+                    selectedFiles={selectedFiles}
+                    setSelectedFiles={setSelectedFiles}
+                    onSelectFile={onSelectFile}
+                />
                 <TextInput
                     textInputs={textInputs}
                     contactInputs={contact}

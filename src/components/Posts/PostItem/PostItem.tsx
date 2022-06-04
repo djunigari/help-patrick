@@ -7,6 +7,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { SiInstagram } from 'react-icons/si';
 import { Post } from "@atoms/postsAtom";
 import ContactButton from "./ContactButton";
+import Carousel from "@components/Layout/Carousel/Carousel";
 
 
 interface PostItemProps {
@@ -59,7 +60,7 @@ function PostItem({ post, userIsCreator, onDeletePost, onSelectPost, homePage }:
                 </Alert>
             )}
 
-            {post.imageUrl && (
+            {post.imageUrls && (
                 <Flex justify='center' align='center'
                     _hover={{ borderColor: singlePostPage ? 'none' : 'gray.500' }}
                     cursor={singlePostPage ? 'unset' : 'pointer'}
@@ -70,16 +71,7 @@ function PostItem({ post, userIsCreator, onDeletePost, onSelectPost, homePage }:
 
                         </Skeleton>
                     )}
-                    <Image
-                        src={post.imageUrl}
-                        objectFit='cover'
-                        h={homePage ? '60' : 'unset'}
-                        maxWidth='100%'
-                        maxHeight={{ base: '100px', md: '460px' }}
-                        alt='Post Image'
-                        display={loadingImage ? 'none' : 'unset'}
-                        onLoad={() => setLoadingImage(false)}
-                    />
+                    <Carousel imageUrls={post.imageUrls} />
                 </Flex>
             )}
             {!homePage && (

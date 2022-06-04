@@ -77,6 +77,16 @@ export default function Carousel({ imageUrls, maxHeight, maxWidth }: CarouselPro
                         position="relative"
                         fit='cover'
                     />
+                    // <Image
+                    //     src={}
+                    //     objectFit='cover'
+                    //     h={homePage ? '60' : 'unset'}
+                    //     maxWidth='100%'
+                    //     maxHeight={{ base: '100px', md: '460px' }}
+                    //     alt='Post Image'
+                    //     display={loadingImage ? 'none' : 'unset'}
+                    //     onLoad={() => setLoadingImage(false)}
+                    // />
                 ))}
             </Slider>
         </Box >

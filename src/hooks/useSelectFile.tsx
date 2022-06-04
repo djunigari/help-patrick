@@ -26,12 +26,8 @@ function useSelectFile() {
     const updateAllFiles = async (postDocRef: DocumentReference) => {
         if (!postDocRef) throw new Error('updateFile error do not have post to upload the image')
 
-        let urls: string[] = []
-        selectedFiles.map(async (file) => {
-            const downloadUrl = await updateFile(file, postDocRef)
-            urls = [...urls, downloadUrl]
-        })
-
+        const promises = selectedFiles.map(async (file) => await updateFile(file, postDocRef))
+        const urls = await Promise.all(promises)
         await updateDoc(postDocRef, {
             imageUrls: urls
         })
@@ -43,7 +39,8 @@ function useSelectFile() {
 
         const imageRef = ref(storage, `posts/${postDocRef.id}/images/${uuid()}`)
         await uploadString(imageRef, file, 'data_url')
-        return getDownloadURL(imageRef)
+        const downloadUrl = await getDownloadURL(imageRef)
+        return downloadUrl
     }
 
     const cleanFiles = () => {

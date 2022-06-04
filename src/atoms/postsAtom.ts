@@ -7,7 +7,7 @@ export type Post = {
     creatorDisplayName: string
     title: string
     body: string
-    imageUrl?: string
+    imageUrls?: string[]
     contact: Contact
     createAt: Timestamp
     categoria: string
