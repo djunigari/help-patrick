@@ -1,11 +1,12 @@
-import { Stack, Box, Button, Flex, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Text, Icon } from '@chakra-ui/react';
+import { Stack, Box, Button, Flex, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Text, Icon, useDisclosure } from '@chakra-ui/react';
 import { getOrientation } from 'get-orientation/browser';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { Area } from "react-easy-crop/types";
 import { IoAddCircleSharp } from 'react-icons/io5';
 import { getCroppedImg, getRotatedImage } from './canvasUtils';
-import SliderCropper from './SliderCropper'
+import ImgDialog from './ImgDialog/ImgDialog';
+import MenuCropperProps from './MenuCropper'
 
 type tplotOptions = {
     [key: string]: number
@@ -26,6 +27,8 @@ function readFile(file: Blob): Promise<string | ArrayBuffer | null> {
 
 function CropperImage() {
     const selectedFileRef = useRef<HTMLInputElement>(null)
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const [imageSrc, setImageSrc] = useState<string | null>(null)
     const [crop, setCrop] = useState({ x: 0, y: 0 })
     const [rotation, setRotation] = useState(0)
@@ -38,7 +41,7 @@ function CropperImage() {
             setCroppedAreaPixels(croppedAreaPixels)
         }, [])
 
-    const showCroppedImage = useCallback(async () => {
+    const showCroppedImage = async () => {
         try {
             const croppedImage = await getCroppedImg(
                 imageSrc!,
@@ -47,14 +50,12 @@ function CropperImage() {
             )
             console.log('donee', { croppedImage })
             setCroppedImage(croppedImage)
+
+            onOpen()
         } catch (e) {
             console.error(e)
         }
-    }, [imageSrc, croppedAreaPixels, rotation])
-
-    const onClose = useCallback(() => {
-        setCroppedImage(null)
-    }, [])
+    }
 
     const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -71,6 +72,10 @@ function CropperImage() {
             setImageSrc(imageDataUrl as string)
         }
     }
+
+    useEffect(() => {
+        if (!isOpen) setCroppedImage(null)
+    }, [isOpen])
 
     return (
         <>
@@ -94,39 +99,18 @@ function CropperImage() {
                             onZoomChange={setZoom}
                         />
                     </Box>
-                    <Stack
-                        direction={{ base: 'column', sm: 'row' }}
-                        align={{ base: 'stretch', sm: 'center' }}
-                        justify='center'
-                        width='full'
-                        spacing={8}
-                        p={4}
-                    >
-                        <SliderCropper
-                            display='Zoom'
-                            value={zoom}
-                            onChange={(val) => setZoom(val)}
-                            min={1}
-                            max={3}
-                            step={0.1}
-                        />
-                        <SliderCropper
-                            display='Rotation'
-                            value={rotation}
-                            onChange={(val) => setRotation(val)}
-                            min={0}
-                            max={360}
-                            step={1}
-                        />
-                        <Button
-                            borderRadius='md'
-                            bg='purple.600'
-                        // onClick={showCroppedImage}
-                        >
-                            Show Result
-                        </Button>
-                    </Stack>
-                    {/* <ImgDialog img={croppedImage} onClose={onClose} /> */}
+                    <MenuCropperProps
+                        zoom={zoom}
+                        setZoom={setZoom}
+                        rotation={rotation}
+                        setRotation={setRotation}
+                        showCroppedImage={showCroppedImage}
+                    />
+                    <ImgDialog
+                        img={croppedImage as string}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                    />
                 </>
             ) : (
                 <Box
