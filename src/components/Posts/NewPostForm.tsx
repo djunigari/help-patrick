@@ -1,5 +1,6 @@
 import { Contact, Post } from '@atoms/postsAtom'
-import { Alert, AlertIcon, Flex, Stack, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Flex, Stack, Text } from '@chakra-ui/react'
+import CropperImage from '@components/Layout/CropperImage/CropperImage'
 import { User } from 'firebase/auth'
 import { addDoc, collection, deleteDoc, DocumentReference, serverTimestamp, Timestamp } from 'firebase/firestore'
 import { useRouter } from 'next/router'
@@ -72,7 +73,15 @@ function NewPostForm({ user }: NewPostFormProps) {
 
     return (
         <Flex direction='column' bg='white' borderRadius={4} mt={2}>
+            <Box
+                position='relative'
+                width='100%'
+                height={{ base: 'xs', md: 'md', xl: 'xl' }}
+            >
+                <CropperImage image='https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000' />
+            </Box>
             <Stack p={4} direction='column' spacing={4}>
+
                 <ImageUpload
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}

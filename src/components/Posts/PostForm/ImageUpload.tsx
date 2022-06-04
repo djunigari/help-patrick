@@ -1,6 +1,5 @@
 import { Flex, Grid, GridItem, Icon, Image, Text } from "@chakra-ui/react"
-import useSelectFile from "@hooks/useSelectFile"
-import { ChangeEvent, useEffect, useRef } from "react"
+import { ChangeEvent, useRef } from "react"
 import { FaTrashAlt } from "react-icons/fa"
 import { IoAddCircleSharp } from "react-icons/io5"
 

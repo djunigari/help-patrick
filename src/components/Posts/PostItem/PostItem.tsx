@@ -71,7 +71,21 @@ function PostItem({ post, userIsCreator, onDeletePost, onSelectPost, homePage }:
 
                         </Skeleton>
                     )}
-                    <Carousel imageUrls={post.imageUrls} />
+                    {homePage ? (
+                        <Image
+                            src={post.imageUrls[0]}
+                            objectFit='cover'
+                            height='200px'
+                            width='100%'
+                            alt='Post Image'
+                            display={loadingImage ? 'none' : 'unset'}
+                            onLoad={() => setLoadingImage(false)}
+                        />
+                    ) : (
+
+                        <Carousel imageUrls={post.imageUrls} onLoad={() => setLoadingImage(false)} />
+                    )}
+
                 </Flex>
             )}
             {!homePage && (

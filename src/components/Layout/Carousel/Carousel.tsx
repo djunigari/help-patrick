@@ -1,5 +1,5 @@
-import { Box, Icon, Image, useBreakpointValue } from '@chakra-ui/react';
-import React, { useRef, useState } from 'react';
+import { Box, Icon, Img, useBreakpointValue } from '@chakra-ui/react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick-theme.css";
@@ -10,10 +10,11 @@ interface CarouselProps {
     imageUrls: string[]
     maxWidth?: string
     maxHeight?: string
+    onLoad: () => void
 }
 
 
-export default function Carousel({ imageUrls, maxHeight, maxWidth }: CarouselProps) {
+export default function Carousel({ imageUrls, maxHeight, maxWidth, onLoad }: CarouselProps) {
     const slider = useRef<Slider>(null);
     const [index, setIndex] = useState<number>(0)
 
@@ -22,13 +23,22 @@ export default function Carousel({ imageUrls, maxHeight, maxWidth }: CarouselPro
     const top = useBreakpointValue({ base: '50%', md: '50%' });
     const side = useBreakpointValue({ base: '5px', md: '10px' });
 
+    useEffect(() => {
+        onLoad()
+    }, [])
+
     return (
         <Box
+            position={'relative'}
+            height={'600px'}
+            width={'full'}
+            overflow={'hidden'}
             mb={10}
-            position='relative'
             fontSize='2xl'
             color='gray.200'
         >
+
+
             {index > 0 && (
                 <Icon as={BsArrowLeftCircleFill}
                     position='absolute'
@@ -69,26 +79,22 @@ export default function Carousel({ imageUrls, maxHeight, maxWidth }: CarouselPro
                 beforeChange={(current, next) => { setIndex(next) }}
             >
                 {imageUrls.map((url, index) => (
-                    <Image
+                    <Box
                         key={index}
-                        src={url}
-                        maxWidth={maxWidth || '400px'}
-                        maxHeight={maxHeight || '400px'}
+                        height={'6xl'}
                         position="relative"
-                        fit='cover'
-                    />
-                    // <Image
-                    //     src={}
-                    //     objectFit='cover'
-                    //     h={homePage ? '60' : 'unset'}
-                    //     maxWidth='100%'
-                    //     maxHeight={{ base: '100px', md: '460px' }}
-                    //     alt='Post Image'
-                    //     display={loadingImage ? 'none' : 'unset'}
-                    //     onLoad={() => setLoadingImage(false)}
-                    // />
-                ))}
-            </Slider>
+                    >
+                        <Img
+                            src={url}
+                            objectFit='cover'
+                            height='100%'
+                            width='100%'
+                            alt='Post Image'
+                        />
+                    </Box>
+                ))
+                }
+            </Slider >
         </Box >
     );
 }
