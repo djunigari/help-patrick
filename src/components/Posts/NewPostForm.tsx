@@ -73,13 +73,9 @@ function NewPostForm({ user }: NewPostFormProps) {
 
     return (
         <Flex direction='column' bg='white' borderRadius={4} mt={2}>
-            <Box
-                position='relative'
-                width='100%'
-                height={{ base: 'xs', md: 'md', xl: 'xl' }}
-            >
-                <CropperImage image='https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000' />
-            </Box>
+
+            <CropperImage />
+
             <Stack p={4} direction='column' spacing={4}>
 
                 <ImageUpload

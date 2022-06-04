@@ -10,8 +10,6 @@ interface ImageUploadProps {
 }
 
 function ImageUpload({ selectedFiles, setSelectedFiles, onSelectFile }: ImageUploadProps) {
-    const selectedFileRef = useRef<HTMLInputElement>(null)
-
     return (
         <Grid templateColumns='repeat(3, 1fr)' gap={1}>
             {selectedFiles?.map(file => (
@@ -40,29 +38,6 @@ function ImageUpload({ selectedFiles, setSelectedFiles, onSelectFile }: ImageUpl
                     </Flex>
                 </GridItem>
             ))}
-            <GridItem
-                border='1px dashed'
-                borderColor='blue.200'
-                borderRadius={4}
-                textColor='blue.200'
-                bg='gray.100'
-                _hover={{
-                    borderColor: 'blue.400',
-                    bg: 'white',
-                    textColor: 'blue.400'
-                }}
-            >
-                <Flex
-                    justify='center'
-                    align='center'
-                    height={{ base: '100px', md: '200px' }}
-                    cursor='pointer'
-                    onClick={() => selectedFileRef.current?.click()}
-                >
-                    <Icon as={IoAddCircleSharp} />
-                </Flex>
-                <input hidden ref={selectedFileRef} type='file' accept="image/*" onChange={onSelectFile} />
-            </GridItem>
         </Grid >
 
     )

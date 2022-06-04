@@ -1,9 +1,11 @@
-import { Box, Button, Flex, Slider, Text } from '@chakra-ui/react';
+import { Stack, Box, Button, Flex, Slider, SliderTrack, SliderFilledTrack, SliderThumb, Text, Icon } from '@chakra-ui/react';
 import { getOrientation } from 'get-orientation/browser';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { Area } from "react-easy-crop/types";
+import { IoAddCircleSharp } from 'react-icons/io5';
 import { getCroppedImg, getRotatedImage } from './canvasUtils';
+import SliderCropper from './SliderCropper'
 
 type tplotOptions = {
     [key: string]: number
@@ -23,6 +25,7 @@ function readFile(file: Blob): Promise<string | ArrayBuffer | null> {
 }
 
 function CropperImage() {
+    const selectedFileRef = useRef<HTMLInputElement>(null)
     const [imageSrc, setImageSrc] = useState<string | null>(null)
     const [crop, setCrop] = useState({ x: 0, y: 0 })
     const [rotation, setRotation] = useState(0)
@@ -91,50 +94,65 @@ function CropperImage() {
                             onZoomChange={setZoom}
                         />
                     </Box>
-                    <Flex
+                    <Stack
                         direction={{ base: 'column', sm: 'row' }}
                         align={{ base: 'stretch', sm: 'center' }}
-                        p={16}
+                        justify='center'
+                        width='full'
+                        spacing={8}
+                        p={4}
                     >
-                        <Flex align='center'>
-                            <Text>
-                                Zoom
-                            </Text>
-                            <Slider
-                                value={zoom}
-                                min={1}
-                                max={3}
-                                step={0.1}
-                            // aria-labelledby="Zoom"
-                            // classes={{ root: classes.slider }}
-                            // onChange={(e, zoom) => setZoom(zoom)}
-                            />
-                        </Flex>
-                        <Flex align='center'>
-                            <Text>
-                                Rotation
-                            </Text>
-                            <Slider
-                                value={rotation}
-                                min={0}
-                                max={360}
-                                step={1}
-                            // aria-labelledby="Rotation"
-                            // classes={{ root: classes.slider }}
-                            // onChange={(e, rotation) => setRotation(rotation)}
-                            />
-                        </Flex>
+                        <SliderCropper
+                            display='Zoom'
+                            value={zoom}
+                            onChange={(val) => setZoom(val)}
+                            min={1}
+                            max={3}
+                            step={0.1}
+                        />
+                        <SliderCropper
+                            display='Rotation'
+                            value={rotation}
+                            onChange={(val) => setRotation(val)}
+                            min={0}
+                            max={360}
+                            step={1}
+                        />
                         <Button
-                            color='purple.400'
+                            borderRadius='md'
+                            bg='purple.600'
                         // onClick={showCroppedImage}
                         >
                             Show Result
                         </Button>
-                    </Flex>
+                    </Stack>
                     {/* <ImgDialog img={croppedImage} onClose={onClose} /> */}
                 </>
             ) : (
-                <input type="file" onChange={onFileChange} accept="image/*" />
+                <Box
+                    border='1px dashed'
+                    borderColor='blue.200'
+                    borderRadius={4}
+                    textColor='blue.200'
+                    bg='gray.100'
+                    _hover={{
+                        borderColor: 'blue.400',
+                        bg: 'white',
+                        textColor: 'blue.400'
+                    }}
+                >
+                    <Flex
+                        justify='center'
+                        align='center'
+                        height={{ base: '100px', md: '200px' }}
+                        cursor='pointer'
+                        onClick={() => selectedFileRef.current?.click()}
+                    >
+                        <Icon as={IoAddCircleSharp} />
+                    </Flex>
+                    <input hidden ref={selectedFileRef} type='file' accept="image/*" onChange={onFileChange} />
+                </Box>
+
             )}
         </>
     );
