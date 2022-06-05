@@ -1,7 +1,8 @@
 import { Post } from "@atoms/postsAtom";
-import { Flex, Image, Skeleton } from "@chakra-ui/react";
+import { Box, Flex, Icon, Image, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { IoImages } from "react-icons/io5";
 
 
 interface PostItemProps {
@@ -10,39 +11,53 @@ interface PostItemProps {
 
 function PostItem({ post }: PostItemProps) {
     const router = useRouter()
+    const imageRef = useRef<HTMLImageElement>(null)
     const [loadingImage, setLoadingImage] = useState(true)
+
+    useEffect(() => {
+        if (loadingImage && imageRef.current?.complete) {
+            setLoadingImage(false);
+        }
+    }, [loadingImage, imageRef]);
 
     return (
         <Flex
             direction='column'
-            border='1px solid'
             bg='white'
-            borderColor='white'
-            borderRadius='4px'
         >
             {post.imageUrls?.length && (
-                <Flex
-                    justify='center'
-                    align='center'
-                    _hover={{ borderColor: 'gray.500' }}
+                <Box
+                    position='relative'
                     cursor='pointer'
                     onClick={() => router.push(`/posts/${post.id}`)}
                 >
                     {loadingImage && (
-                        <Skeleton height='200px' width='100%' borderRadius={4}>
+                        <Skeleton position='absolute' height='200px' width='100%' borderRadius={4}>
 
                         </Skeleton>
                     )}
+                    <Icon
+                        m={2}
+                        position='absolute'
+                        zIndex={3}
+                        right={0}
+                        color='white'
+                        fontWeight='bold'
+                        as={IoImages}
+                    />
                     <Image
+                        ref={imageRef}
+                        position='absolute'
+                        zIndex={2}
                         src={post.imageUrls[0]}
                         objectFit='cover'
                         height='200px'
                         width='100%'
                         alt='Post Image'
-                        display={loadingImage ? 'none' : 'unset'}
+                        display={loadingImage ? 'none' : 'inline-block'}
                         onLoad={() => setLoadingImage(false)}
                     />
-                </Flex>
+                </Box>
             )}
         </Flex >
     )
