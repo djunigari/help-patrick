@@ -29,29 +29,33 @@ function PostItem({ post }: PostItemProps) {
                 <Box
                     position='relative'
                     cursor='pointer'
+                    height='200px'
                     onClick={() => router.push(`/posts/${post.id}`)}
                 >
                     {loadingImage && (
-                        <Skeleton position='absolute' height='200px' width='100%' borderRadius={4}>
+                        <Skeleton position='absolute' height='100%' width='100%' borderRadius={4}>
 
                         </Skeleton>
                     )}
-                    <Icon
-                        m={2}
-                        position='absolute'
-                        zIndex={3}
-                        right={0}
-                        color='white'
-                        fontWeight='bold'
-                        as={IoImages}
-                    />
+                    {post.imageUrls.length > 1 && (
+                        <Icon
+                            m={2}
+                            position='absolute'
+                            zIndex={3}
+                            right={0}
+                            color='white'
+                            fontSize={{ base: 'sm', md: 'xl' }}
+                            fontWeight='bold'
+                            as={IoImages}
+                        />
+                    )}
                     <Image
                         ref={imageRef}
                         position='absolute'
                         zIndex={2}
                         src={post.imageUrls[0]}
                         objectFit='cover'
-                        height='200px'
+                        height='100%'
                         width='100%'
                         alt='Post Image'
                         display={loadingImage ? 'none' : 'inline-block'}

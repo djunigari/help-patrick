@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Flex, Icon, Image, Skeleton, Spacer, Spinner, Stack, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Divider, Flex, Icon, Image, Skeleton, Spacer, Spinner, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -6,6 +6,8 @@ import { Post } from "@atoms/postsAtom";
 import Carousel from "@components/Layout/Carousel/Carousel";
 import usePosts from "@hooks/usePosts";
 import Contact from "./Contact";
+import { BsThreeDots } from "react-icons/bs";
+import MenuModal from "./MenuModal/MenuModal";
 
 
 interface PostProps {
@@ -17,6 +19,7 @@ function PostComponent({ post, userIsCreator }: PostProps) {
     const router = useRouter()
     const [loadingDelete, setLoadingDelete] = useState(false)
     const [error, setError] = useState(false)
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const { onDeletePost } = usePosts()
 
@@ -39,70 +42,51 @@ function PostComponent({ post, userIsCreator }: PostProps) {
     }
 
     return (
-        <Flex
-            direction='column'
-            bg='white'
-        >
-            {error && (
-                <Alert status='error'>
-                    <AlertIcon />
-                    <Text mr={2}>{error}</Text>
-                </Alert>
-            )}
+        <>
+            <MenuModal isOpen={isOpen} onClose={onClose} userIsCreator={userIsCreator} handleDelete={handleDelete} loadingDelete={loadingDelete} />
 
-            {post.imageUrls?.length && (
-                <Flex
-                    justify='center'
-                    align='center'
-                    _hover={{ borderColor: 'none' }}
-                    cursor={'unset'}
-                >
-                    <Carousel imageUrls={post.imageUrls} />
-                </Flex>
-            )}
-
-            <Flex direction='column' p={2}>
-                <Text fontSize='12pt' fontWeight={600}>
-                    {post.title}
-                </Text>
-                <Text fontSize='10pt'>
-                    {post.body}
-                </Text>
-            </Flex>
-
-            <Stack
-                direction='row'
-                spacing={1}
-                ml={1}
-                mb={2}
+            <Flex
+                direction={{ base: 'column', md: 'row' }}
+                boxShadow='lg'
+                borderRadius='0px 8px 8px 8px'
+                bg='white'
             >
-                <Contact post={post} />
-
-                {userIsCreator && (
-                    <>
-                        <Spacer />
-                        <Flex
-                            mr={1}
-                            align='center'
-                            p='8px 10px'
-                            borderRadius={4}
-                            _hover={{ bg: 'gray.200' }}
-                            cursor='pointer'
-                            onClick={handleDelete}
-                        >
-                            {loadingDelete ? (
-                                <Spinner size='sm' />
-                            ) : (
-                                <>
-                                    <Icon as={AiOutlineDelete} mr={2} />
-                                    <Text fontSize='9pt'>Delete</Text>
-                                </>
-                            )}
-                        </Flex>
-                    </>
+                {error && (
+                    <Alert status='error'>
+                        <AlertIcon />
+                        <Text mr={2}>{error}</Text>
+                    </Alert>
                 )}
-            </Stack>
-        </Flex >
+
+                <Carousel imageUrls={post.imageUrls} />
+
+                <Flex direction='column' boxSize='full'>
+                    <Flex
+                        align='center'
+                        justify='space-between'
+                        p={2}
+                        fontSize='xl'
+                        fontWeight={600}
+                    >
+                        <Text >
+                            {post.title}
+                        </Text>
+                        <Icon
+                            as={BsThreeDots}
+                            cursor='pointer'
+                            onClick={onOpen}
+                        />
+                    </Flex>
+
+                    <Divider orientation='horizontal' colorScheme='black' />
+                    <Text fontSize='10pt' p={2}>
+                        {post.body}
+                    </Text>
+                    <Spacer />
+                    <Contact post={post} />
+                </Flex>
+            </Flex >
+        </>
     )
 }
 

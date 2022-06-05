@@ -15,6 +15,7 @@ function Contact({ post }: ContactProps) {
         <Stack
             direction='row'
             spacing={1}
+            p={2}
         >
             {post.contact.instagram && (
                 <ContactItem

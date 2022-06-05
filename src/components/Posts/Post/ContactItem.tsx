@@ -22,8 +22,7 @@ function ContactItem({ displayName, icon, color, link }: ContactItemProps) {
                 cursor='pointer'
                 fontSize='sm'
                 fontWeight='bold'
-                bg={`${color}.400`}
-                color='white'
+                color={`${color}.400`}
             >
                 <Icon as={icon} mr={1} />
                 <Text>{displayName}</Text>

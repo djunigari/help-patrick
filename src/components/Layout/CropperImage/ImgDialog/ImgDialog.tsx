@@ -20,8 +20,8 @@ function ImgDialog({ img, isOpen, onClose, addImage }: ImgDialogProps) {
             <ModalContent>
                 <ModalHeader>Cropped image</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>
-                    <Img src={img} alt="Cropped" maxHeight='100%' maxWidth='100%' />
+                <ModalBody maxWidth='md' width={{ base: 'xs', md: 'md' }} height={{ base: 'xs', md: 'md' }}>
+                    <Img src={img} alt="Cropped" width='100%' height='100%' />
                 </ModalBody>
                 <ModalFooter>
                     <Button

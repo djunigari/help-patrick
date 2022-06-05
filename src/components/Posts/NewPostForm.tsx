@@ -72,7 +72,7 @@ function NewPostForm({ user }: NewPostFormProps) {
     }
 
     return (
-        <Flex direction='column' bg='white' borderRadius={4} mt={2}>
+        <Flex direction='column' bg='white' borderRadius={4} mt={2} boxShadow="lg">
 
             <CropperImage selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
 
