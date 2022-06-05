@@ -48,7 +48,7 @@ function PostComponent({ post, userIsCreator }: PostProps) {
             <Flex
                 direction={{ base: 'column', md: 'row' }}
                 boxShadow='lg'
-                borderRadius={{ base: 8, md: '0px 8px 8px 8px' }}
+                borderRadius={{ base: '0px 0px 8px 8px', md: '0px 8px 8px 8px' }}
                 bg='white'
                 pb={3}
             >

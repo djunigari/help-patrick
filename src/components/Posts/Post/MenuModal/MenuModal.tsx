@@ -13,19 +13,17 @@ interface MenuModalProps {
 
 function MenuModal({ isOpen, onClose, userIsCreator, handleDelete, loadingDelete }: MenuModalProps) {
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent borderRadius='md'>
-                <Stack align='center'>
-
+                <Flex direction='column' fontSize='sm' textAlign='center'  >
                     {userIsCreator && (
                         <>
                             <Flex
-                                pt={2}
+                                p={2}
                                 align='center'
                                 justify='center'
                                 onClick={handleDelete}
-                                fontWeight='bold'
                                 color='red'
                                 cursor='pointer'
                                 width='100%'
@@ -34,15 +32,12 @@ function MenuModal({ isOpen, onClose, userIsCreator, handleDelete, loadingDelete
                                 <Icon as={FaTrashAlt} mr={2} />
                                 <Text >Deletar</Text>
                             </Flex>
-                            <Divider />
-                            <Text px={2} >Editar</Text>
-                            <Divider />
+                            <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full'>Editar</Text>
                         </>
                     )}
-                    <Text px={2}>Copiar Link</Text>
-                    <Divider />
-                    <Text px={2} pb={2} onClick={onClose}>Cancelar</Text>
-                </Stack>
+                    <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full' >Copiar Link</Text>
+                    <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full' onClick={onClose}>Cancelar</Text>
+                </Flex>
             </ModalContent>
         </Modal >
     )
