@@ -4,14 +4,14 @@ import Link from 'next/link'
 import React from 'react'
 import { IconType } from 'react-icons'
 
-interface ContactButtonProps {
+interface ContactItemProps {
     displayName: string
     link: string
     icon: IconType
     color?: string
 }
 
-function ContactButton({ displayName, icon, color, link }: ContactButtonProps) {
+function ContactItem({ displayName, icon, color, link }: ContactItemProps) {
     return (
         <Link href={link} passHref={true}>
             <Flex
@@ -32,4 +32,4 @@ function ContactButton({ displayName, icon, color, link }: ContactButtonProps) {
     )
 }
 
-export default ContactButton
+export default ContactItem

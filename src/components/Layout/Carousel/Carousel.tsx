@@ -10,11 +10,10 @@ interface CarouselProps {
     imageUrls: string[]
     maxWidth?: string
     maxHeight?: string
-    onLoad: () => void
 }
 
 
-export default function Carousel({ imageUrls, maxHeight, maxWidth, onLoad }: CarouselProps) {
+export default function Carousel({ imageUrls, maxHeight, maxWidth }: CarouselProps) {
     const slider = useRef<Slider>(null);
     const [index, setIndex] = useState<number>(0)
 
@@ -22,10 +21,6 @@ export default function Carousel({ imageUrls, maxHeight, maxWidth, onLoad }: Car
     // buttons as the screen size changes
     const top = useBreakpointValue({ base: '50%', md: '50%' });
     const side = useBreakpointValue({ base: '5px', md: '10px' });
-
-    useEffect(() => {
-        onLoad()
-    }, [])
 
     return (
         <Box
@@ -84,12 +79,18 @@ export default function Carousel({ imageUrls, maxHeight, maxWidth, onLoad }: Car
                         height={'6xl'}
                         position="relative"
                     >
+                        {/* {loadingImage && (
+                            <Skeleton height='200px' width='100%' borderRadius={4}>
+
+                            </Skeleton>
+                        )} */}
                         <Img
                             src={url}
                             objectFit='cover'
                             height='100%'
                             width='100%'
                             alt='Post Image'
+                        // onLoad={() => setLoadingImage(false)}
                         />
                     </Box>
                 ))
