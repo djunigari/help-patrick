@@ -1,9 +1,9 @@
 import { Post } from "@atoms/postsAtom";
-import { Box, Flex, Icon, Image, Skeleton } from "@chakra-ui/react";
+import { Box, Icon, Image, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { IoImages } from "react-icons/io5";
-
+import { AspectRatio } from '@chakra-ui/react'
 
 interface PostItemProps {
     post: Post
@@ -21,15 +21,11 @@ function PostItem({ post }: PostItemProps) {
     }, [loadingImage, imageRef]);
 
     return (
-        <Flex
-            direction='column'
-            bg='white'
-        >
+        <>
             {post.imageUrls?.length && (
                 <Box
                     position='relative'
                     cursor='pointer'
-                    height='200px'
                     onClick={() => router.push(`/posts/${post.id}`)}
                 >
                     {loadingImage && (
@@ -49,21 +45,23 @@ function PostItem({ post }: PostItemProps) {
                             as={IoImages}
                         />
                     )}
-                    <Image
-                        ref={imageRef}
-                        position='absolute'
-                        zIndex={2}
-                        src={post.imageUrls[0]}
-                        objectFit='cover'
-                        height='100%'
-                        width='100%'
-                        alt='Post Image'
-                        display={loadingImage ? 'none' : 'inline-block'}
-                        onLoad={() => setLoadingImage(false)}
-                    />
+                    <AspectRatio maxW='560px' ratio={1}>
+                        <Image
+                            ref={imageRef}
+                            position='absolute'
+                            zIndex={2}
+                            src={post.imageUrls[0]}
+                            objectFit='cover'
+                            height='100%'
+                            width='100%'
+                            alt='Post Image'
+                            display={loadingImage ? 'none' : 'inline-block'}
+                            onLoad={() => setLoadingImage(false)}
+                        />
+                    </AspectRatio>
                 </Box>
             )}
-        </Flex >
+        </>
     )
 }
 

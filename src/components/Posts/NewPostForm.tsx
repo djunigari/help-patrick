@@ -53,7 +53,7 @@ function NewPostForm({ user }: NewPostFormProps) {
 
             await updateAllFiles(postDocRef)
 
-            router.back()
+            router.push(`/posts/${postDocRef.id}`)
         } catch (error: any) {
             console.log('handleCreatePost error', error.message)
             if (postDocRef) await deleteDoc(postDocRef)

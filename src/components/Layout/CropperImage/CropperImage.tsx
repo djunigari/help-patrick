@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Icon, Text, useDisclosure } from '@chakra-ui/react';
 import { getOrientation } from 'get-orientation/browser';
 import React, { useEffect, useRef, useState } from 'react';
 import Cropper from 'react-easy-crop';
@@ -138,13 +138,15 @@ function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
                     }}
                 >
                     <Flex
+                        direction='column'
                         justify='center'
                         align='center'
                         height={{ base: '100px', md: '200px' }}
                         cursor='pointer'
                         onClick={() => selectedFileRef.current?.click()}
                     >
-                        <Icon as={IoAddCircleSharp} />
+                        <Icon fontSize='4xl' as={IoAddCircleSharp} />
+                        <Text>Adicionar Imagem</Text>
                     </Flex>
                     <input hidden ref={selectedFileRef} type='file' accept="image/*" onChange={onFileChange} />
                 </Box>

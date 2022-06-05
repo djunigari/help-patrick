@@ -41,7 +41,7 @@ function MenuCropper({ zoom, setZoom, rotation, setRotation, showCroppedImage }:
                 bg='purple.600'
                 onClick={showCroppedImage}
             >
-                Show Result
+                Adicionar
             </Button>
         </Stack>
     )

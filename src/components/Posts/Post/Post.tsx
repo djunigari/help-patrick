@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Divider, Flex, Icon, Image, Skeleton, Spacer, Spinner, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Divider, Flex, Grid, GridItem, Icon, Image, Skeleton, Spacer, Spinner, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -48,8 +48,9 @@ function PostComponent({ post, userIsCreator }: PostProps) {
             <Flex
                 direction={{ base: 'column', md: 'row' }}
                 boxShadow='lg'
-                borderRadius='0px 8px 8px 8px'
+                borderRadius={{ base: 8, md: '0px 8px 8px 8px' }}
                 bg='white'
+                pb={3}
             >
                 {error && (
                     <Alert status='error'>
@@ -57,10 +58,11 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                         <Text mr={2}>{error}</Text>
                     </Alert>
                 )}
+                <Box width={{ base: '100%', md: '50%' }}>
+                    <Carousel imageUrls={post.imageUrls} />
+                </Box>
 
-                <Carousel imageUrls={post.imageUrls} />
-
-                <Flex direction='column' boxSize='full'>
+                <Flex direction='column' boxSize='full' width={{ base: '100%', md: '50%' }}>
                     <Flex
                         align='center'
                         justify='space-between'
@@ -77,13 +79,11 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                             onClick={onOpen}
                         />
                     </Flex>
-
-                    <Divider orientation='horizontal' colorScheme='black' />
+                    <Divider orientation='horizontal' colorScheme='black' mb={2} />
+                    <Contact post={post} />
                     <Text fontSize='10pt' p={2}>
                         {post.body}
                     </Text>
-                    <Spacer />
-                    <Contact post={post} />
                 </Flex>
             </Flex >
         </>

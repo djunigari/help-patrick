@@ -1,5 +1,5 @@
 import { Post } from '@atoms/postsAtom'
-import { Grid, GridItem, Stack } from '@chakra-ui/react'
+import { AspectRatio, Grid, GridItem, Stack } from '@chakra-ui/react'
 import CreatePostLink from '@components/Community/CreatePostLink'
 import PersonalHome from '@components/Community/PersonalHome'
 import Premium from '@components/Community/Premium'
@@ -23,12 +23,11 @@ function Home({ posts }: HomeProps) {
       <>
         <Stack spacing={5}>
           <Premium />
-          <PersonalHome />
           {user && (<CreatePostLink />)}
         </Stack>
       </>
       <>
-        <Grid templateColumns='repeat(3, 1fr)'>
+        <Grid templateColumns={{ base: 'repeat(3, 1fr)', sm: 'repeat(4, 1fr)', md: 'repeat(5, 1fr)' }}>
           {posts.map(post => (
             <GridItem
               key={post.id}

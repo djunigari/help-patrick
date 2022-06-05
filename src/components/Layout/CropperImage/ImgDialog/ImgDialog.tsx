@@ -18,9 +18,13 @@ function ImgDialog({ img, isOpen, onClose, addImage }: ImgDialogProps) {
         >
             <ModalOverlay />
             <ModalContent>
-                <ModalHeader>Cropped image</ModalHeader>
+                <ModalHeader>Imagem Selecionada</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody maxWidth='md' width={{ base: 'xs', md: 'md' }} height={{ base: 'xs', md: 'md' }}>
+                <ModalBody
+                    alignSelf='center'
+                    width={{ base: 'xs', md: 'md' }}
+                    height={{ base: 'xs', md: 'md' }}
+                >
                     <Img src={img} alt="Cropped" width='100%' height='100%' />
                 </ModalBody>
                 <ModalFooter>
@@ -39,7 +43,7 @@ function ImgDialog({ img, isOpen, onClose, addImage }: ImgDialogProps) {
                         _hover={{ bg: 'green.200' }}
                         onClick={addImage}
                     >
-                        Adicionar
+                        Adicionar Image
                     </Button>
                 </ModalFooter>
             </ModalContent>
