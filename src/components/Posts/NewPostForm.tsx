@@ -1,12 +1,13 @@
 import { Contact, Post } from '@atoms/postsAtom'
-import { Alert, AlertIcon, Box, Flex, Stack, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Flex, Stack, Text } from '@chakra-ui/react'
 import CropperImage from '@components/Layout/CropperImage/CropperImage'
 import { User } from 'firebase/auth'
 import { addDoc, collection, deleteDoc, DocumentReference, serverTimestamp, Timestamp } from 'firebase/firestore'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useState } from 'react'
-import { firestore } from '../../firebase/clientApp'
+import { ChangeEvent, useEffect, useState } from 'react'
+import { firestore } from '@firebase/clientApp'
 import useSelectFile from '../../hooks/useSelectFile'
+import ContactInput from './PostForm/ContactInput'
 import ImageUpload from './PostForm/ImageUpload'
 import TextInput from './PostForm/TextInput'
 
@@ -16,40 +17,36 @@ interface NewPostFormProps {
 
 function NewPostForm({ user }: NewPostFormProps) {
     const router = useRouter()
-
     const [contact, setContact] = useState<Contact>({
         phone: '',
         instagram: '',
         facebook: ''
     })
 
-    const [textInputs, setTextInputs] = useState({
+    const [post, setPost] = useState<Post>({
+        creatorId: user.uid,
+        creatorDisplayName: user.email!.split('@')[0],
         title: '',
         body: '',
-        categoria: ''
+        contact,
+        createAt: serverTimestamp() as Timestamp,
+        categoria: '',
+        subcategoria: ''
     })
+
+
+    const [tags, setTags] = useState<string[]>([])
+
     const { selectedFiles, setSelectedFiles, onSelectFile, updateAllFiles, cleanFiles } = useSelectFile()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
     const handleCreatePost = async () => {
-
-        // create new post object => type Post
-        const newPost: Post = {
-            creatorId: user?.uid,
-            creatorDisplayName: user.email!.split('@')[0],
-            title: textInputs.title,
-            body: textInputs.body,
-            contact,
-            categoria: textInputs.categoria,
-            createAt: serverTimestamp() as Timestamp
-        }
-
         setLoading(true)
         let postDocRef: DocumentReference | null = null
         try {
             //store the post in db
-            postDocRef = await addDoc(collection(firestore, 'posts'), newPost)
+            postDocRef = await addDoc(collection(firestore, 'posts'), post)
 
             await updateAllFiles(postDocRef)
 
@@ -63,13 +60,16 @@ function NewPostForm({ user }: NewPostFormProps) {
         setLoading(false)
     }
 
-    const onTextChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { target: { name, value } } = event
-        setTextInputs(prev => ({
-            ...prev,
-            [name]: value
-        }))
-    }
+    // const onTextChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    //     const { target: { name, value } } = event
+    //     setPost(prev => ({
+    //         ...prev,
+    //         [name]: value
+    //     }))
+    // }
+    useEffect(() => {
+        setPost({ ...post, contact })
+    }, [contact])
 
     return (
         <Flex direction='column' bg='white' borderRadius={4} mt={2} boxShadow="lg">
@@ -83,14 +83,25 @@ function NewPostForm({ user }: NewPostFormProps) {
                     setSelectedFiles={setSelectedFiles}
                     onSelectFile={onSelectFile}
                 />
-                <TextInput
-                    textInputs={textInputs}
+                <ContactInput
                     contactInputs={contact}
                     setContact={setContact}
-                    handleCreatePost={handleCreatePost}
-                    onChange={onTextChange}
-                    loading={loading}
                 />
+                <TextInput
+                    post={post}
+                    setPost={setPost}
+                />
+                <Button
+                    alignSelf='flex-end'
+                    height='34px'
+                    padding='0px 30px'
+                    disabled={!post.title}
+                    isLoading={loading}
+                    onClick={handleCreatePost}
+                >
+                    Post
+                </Button>
+
             </Stack>
             {error && (
                 <Alert status='error'>

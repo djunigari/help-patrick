@@ -11,6 +11,8 @@ export type Post = {
     contact: Contact
     createAt: Timestamp
     categoria: string
+    subcategoria: string
+    tags?: string[]
 }
 
 export type Contact = {

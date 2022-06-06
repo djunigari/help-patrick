@@ -8,6 +8,7 @@ import usePosts from "@hooks/usePosts";
 import Contact from "./Contact";
 import { BsThreeDots } from "react-icons/bs";
 import MenuModal from "./MenuModal/MenuModal";
+import { IoPaperPlaneOutline } from "react-icons/io5";
 
 
 interface PostProps {
@@ -73,11 +74,21 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                         <Text >
                             {post.title}
                         </Text>
-                        <Icon
-                            as={BsThreeDots}
-                            cursor='pointer'
-                            onClick={onOpen}
-                        />
+                        {userIsCreator ? (
+                            <Icon
+                                as={BsThreeDots}
+                                cursor='pointer'
+                                onClick={onOpen}
+                            />
+                        ) : (
+                            <Icon
+                                as={IoPaperPlaneOutline}
+                                cursor='pointer'
+                                onClick={onOpen}
+                            />
+
+                        )}
+
                     </Flex>
                     <Divider orientation='horizontal' colorScheme='black' mb={2} />
                     <Contact post={post} />

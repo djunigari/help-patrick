@@ -62,9 +62,8 @@ export default function Carousel({ imageUrls, maxHeight, maxWidth }: CarouselPro
                         beforeChange={(current, next) => { setIndex(next) }}
                     >
                         {imageUrls.map((url, index) => (
-
                             <Img
-
+                                key={index}
                                 src={url}
                                 objectFit='contain'
                                 alt={`Post Image ${index + 1}`}
