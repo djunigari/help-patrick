@@ -1,13 +1,14 @@
 import { Contact, Post } from '@atoms/postsAtom'
-import { Alert, AlertIcon, Box, Button, Flex, Stack, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, Button, Flex, Stack, Text } from '@chakra-ui/react'
 import CropperImage from '@components/Layout/CropperImage/CropperImage'
+import { firestore } from '@firebase/clientApp'
 import { User } from 'firebase/auth'
 import { addDoc, collection, deleteDoc, DocumentReference, serverTimestamp, Timestamp } from 'firebase/firestore'
 import { useRouter } from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
-import { firestore } from '@firebase/clientApp'
+import { useEffect, useState } from 'react'
 import useSelectFile from '../../hooks/useSelectFile'
 import ContactInput from './PostForm/ContactInput'
+import FilterInputs from './PostForm/FilterInputs'
 import ImageUpload from './PostForm/ImageUpload'
 import TextInput from './PostForm/TextInput'
 
@@ -30,8 +31,8 @@ function NewPostForm({ user }: NewPostFormProps) {
         body: '',
         contact,
         createAt: serverTimestamp() as Timestamp,
-        categoria: '',
-        subcategoria: ''
+        category: '',
+        subcategory: ''
     })
 
 
@@ -60,13 +61,6 @@ function NewPostForm({ user }: NewPostFormProps) {
         setLoading(false)
     }
 
-    // const onTextChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    //     const { target: { name, value } } = event
-    //     setPost(prev => ({
-    //         ...prev,
-    //         [name]: value
-    //     }))
-    // }
     useEffect(() => {
         setPost({ ...post, contact })
     }, [contact])
@@ -86,6 +80,10 @@ function NewPostForm({ user }: NewPostFormProps) {
                 <ContactInput
                     contactInputs={contact}
                     setContact={setContact}
+                />
+                <FilterInputs
+                    post={post}
+                    setPost={setPost}
                 />
                 <TextInput
                     post={post}

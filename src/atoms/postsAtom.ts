@@ -10,8 +10,8 @@ export type Post = {
     imageUrls?: string[]
     contact: Contact
     createAt: Timestamp
-    categoria: string
-    subcategoria: string
+    category: string
+    subcategory: string
     tags?: string[]
 }
 
