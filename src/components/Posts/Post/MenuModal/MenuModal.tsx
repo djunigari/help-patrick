@@ -35,7 +35,11 @@ function MenuModal({ isOpen, onClose, userIsCreator, handleDelete, loadingDelete
                             <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full'>Editar</Text>
                         </>
                     )}
-                    <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full' >Copiar Link</Text>
+                    <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full'
+                        onClick={() => { navigator.clipboard.writeText(window.location.href) }}
+                    >
+                        Copiar Link
+                    </Text>
                     <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full' onClick={onClose}>Cancelar</Text>
                 </Flex>
             </ModalContent>
