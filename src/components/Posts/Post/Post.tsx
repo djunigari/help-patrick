@@ -43,7 +43,13 @@ function PostComponent({ post, userIsCreator }: PostProps) {
 
     return (
         <>
-            <MenuModal isOpen={isOpen} onClose={onClose} userIsCreator={userIsCreator} handleDelete={handleDelete} loadingDelete={loadingDelete} />
+            <MenuModal
+                isOpen={isOpen}
+                onClose={onClose}
+                userIsCreator={userIsCreator}
+                handleEdit={() => router.push(`/posts/${post.id}/edit`)}
+                handleDelete={handleDelete} loadingDelete={loadingDelete}
+            />
 
             <Flex
                 direction={{ base: 'column', md: 'row' }}

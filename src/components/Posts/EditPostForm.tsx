@@ -12,29 +12,16 @@ import FilterInputs from './PostForm/FilterInputs'
 import ImageUpload from './PostForm/ImageUpload'
 import TextInput from './PostForm/TextInput'
 
-interface NewPostFormProps {
+interface EditPostFormProps {
     user: User
+    oldVersionPost: Post
 }
 
-function NewPostForm({ user }: NewPostFormProps) {
+function EditPostForm({ user, oldVersionPost }: EditPostFormProps) {
     const router = useRouter()
-    const [contact, setContact] = useState<Contact>({
-        phone: '',
-        instagram: '',
-        facebook: ''
-    })
+    const [contact, setContact] = useState<Contact>({ ...oldVersionPost.contact })
 
-    const [post, setPost] = useState<Post>(
-        {
-            creatorId: user.uid,
-            creatorDisplayName: user.email!.split('@')[0],
-            title: '',
-            body: '',
-            contact,
-            createAt: serverTimestamp() as Timestamp,
-            category: '',
-            subcategory: ''
-        })
+    const [post, setPost] = useState<Post>({ ...oldVersionPost })
 
     const { selectedFiles, setSelectedFiles, onSelectFile, updateAllFiles, cleanFiles } = useSelectFile()
     const [loading, setLoading] = useState(false)
@@ -58,6 +45,13 @@ function NewPostForm({ user }: NewPostFormProps) {
         cleanFiles()
         setLoading(false)
     }
+
+    useEffect(() => {
+        if (oldVersionPost) {
+            setPost({ ...oldVersionPost })
+            setSelectedFiles([...oldVersionPost.imageUrls || []])
+        }
+    }, [oldVersionPost])
 
     useEffect(() => {
         setPost({ ...post, contact })
@@ -87,16 +81,29 @@ function NewPostForm({ user }: NewPostFormProps) {
                     post={post}
                     setPost={setPost}
                 />
-                <Button
-                    alignSelf='flex-end'
-                    height='34px'
-                    padding='0px 30px'
-                    disabled={!post.title}
-                    isLoading={loading}
-                    onClick={handleCreatePost}
-                >
-                    Post
-                </Button>
+                <Flex justify='flex-end'>
+                    <Button
+                        alignSelf='flex-end'
+                        height='34px'
+                        padding='0px 30px'
+                        disabled={!post.title}
+                        isLoading={loading}
+                        onClick={() => router.back()}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        alignSelf='flex-end'
+                        height='34px'
+                        padding='0px 30px'
+                        disabled={!post.title}
+                        isLoading={loading}
+                        onClick={handleCreatePost}
+                    >
+                        Atualizar
+                    </Button>
+                </Flex>
+
 
             </Stack>
             {error && (
@@ -109,4 +116,4 @@ function NewPostForm({ user }: NewPostFormProps) {
     )
 }
 
-export default NewPostForm
+export default EditPostForm

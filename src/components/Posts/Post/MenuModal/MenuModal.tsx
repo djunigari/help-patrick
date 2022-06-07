@@ -1,4 +1,5 @@
 import { Divider, Flex, Icon, Modal, ModalContent, ModalOverlay, Spinner, Stack, Text } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import React from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 
@@ -8,10 +9,12 @@ interface MenuModalProps {
     isOpen: boolean
     userIsCreator: boolean
     onClose: () => void
+    handleEdit: () => void
     handleDelete: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
 }
 
-function MenuModal({ isOpen, onClose, userIsCreator, handleDelete, loadingDelete }: MenuModalProps) {
+function MenuModal({ isOpen, onClose, userIsCreator, handleEdit, handleDelete, loadingDelete }: MenuModalProps) {
+    const router = useRouter()
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
@@ -32,7 +35,11 @@ function MenuModal({ isOpen, onClose, userIsCreator, handleDelete, loadingDelete
                                 <Icon as={FaTrashAlt} mr={2} />
                                 <Text >Deletar</Text>
                             </Flex>
-                            <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full'>Editar</Text>
+                            <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full'
+                                onClick={handleEdit}
+                            >
+                                Editar
+                            </Text>
                         </>
                     )}
                     <Text p={2} borderTop='1px solid' borderColor='black' cursor='pointer' width='full'
