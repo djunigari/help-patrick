@@ -1,5 +1,5 @@
 import { Contact } from '@atoms/postsAtom'
-import { Flex, InputGroup, InputLeftElement, Input, Stack, Grid, GridItem } from '@chakra-ui/react'
+import { Grid, GridItem, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import React from 'react'
 import { BsFacebook, BsWhatsapp } from 'react-icons/bs'
 import { SiInstagram } from 'react-icons/si'
@@ -22,16 +22,7 @@ function ContactInput({ contactInputs, setContact }: ContactInputProps) {
                         name='instagram'
                         value={contactInputs.instagram}
                         onChange={(event) => setContact({ ...contactInputs, instagram: event.target.value })}
-                        fontSize='10pt'
-                        borderRadius={4}
                         placeholder='Instagram'
-                        _placeholder={{ color: 'gray.500' }}
-                        _hover={{
-                            outline: 'none',
-                            bg: 'white',
-                            border: '1px solid',
-                            borderColor: 'black'
-                        }}
                     />
                 </InputGroup>
             </GridItem>
@@ -43,17 +34,9 @@ function ContactInput({ contactInputs, setContact }: ContactInputProps) {
                     />
                     <Input
                         name='facebook'
+                        value={contactInputs.facebook}
                         onChange={(event) => setContact({ ...contactInputs, facebook: event.target.value })}
-                        fontSize='10pt'
-                        borderRadius={4}
                         placeholder='Facebook'
-                        _placeholder={{ color: 'gray.500' }}
-                        _hover={{
-                            outline: 'none',
-                            bg: 'white',
-                            border: '1px solid',
-                            borderColor: 'black'
-                        }}
                     />
                 </InputGroup>
             </GridItem>
@@ -68,16 +51,7 @@ function ContactInput({ contactInputs, setContact }: ContactInputProps) {
                         type='phone'
                         value={contactInputs.phone}
                         onChange={(event) => setContact({ ...contactInputs, phone: event.target.value })}
-                        fontSize='10pt'
-                        borderRadius={4}
                         placeholder='Phone'
-                        _placeholder={{ color: 'gray.500' }}
-                        _hover={{
-                            outline: 'none',
-                            bg: 'white',
-                            border: '1px solid',
-                            borderColor: 'black'
-                        }}
                     />
                 </InputGroup>
             </GridItem>

@@ -14,16 +14,7 @@ function TextInput({ post, setPost }: TextInputProps) {
                 name='title'
                 value={post.title}
                 onChange={(event) => setPost({ ...post, title: event.target.value })}
-                fontSize='10pt'
-                borderRadius={4}
                 placeholder='Title'
-                _placeholder={{ color: 'gray.500' }}
-                _hover={{
-                    outline: 'none',
-                    bg: 'white',
-                    border: '1px solid',
-                    borderColor: 'black'
-                }}
             />
             <Textarea
                 name='body'

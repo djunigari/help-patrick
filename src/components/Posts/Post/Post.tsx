@@ -1,14 +1,13 @@
-import { Alert, AlertIcon, Box, Divider, Flex, Grid, GridItem, Icon, Image, Skeleton, Spacer, Spinner, Stack, Text, useDisclosure } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
 import { Post } from "@atoms/postsAtom";
+import { Alert, AlertIcon, Box, Divider, Flex, Icon, Spacer, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import Carousel from "@components/Layout/Carousel/Carousel";
 import usePosts from "@hooks/usePosts";
-import Contact from "./Contact";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
-import MenuModal from "./MenuModal/MenuModal";
 import { IoPaperPlaneOutline } from "react-icons/io5";
+import Contact from "./Contact";
+import MenuModal from "./MenuModal/MenuModal";
 
 
 interface PostProps {
@@ -92,9 +91,25 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                     </Flex>
                     <Divider orientation='horizontal' colorScheme='black' mb={2} />
                     <Contact post={post} />
+
                     <Text fontSize='10pt' p={2}>
                         {post.body}
                     </Text>
+
+                    <Spacer />
+                    <Divider />
+                    <Stack direction='row' p={2}>
+                        {post.tags?.map(item => (
+                            <Text
+                                key={item}
+                                fontSize='sm'
+                                fontWeight='semibold'
+                                color='orange'
+                            >
+                                {`#${item} `}
+                            </Text>
+                        ))}
+                    </Stack>
                 </Flex>
             </Flex >
         </>

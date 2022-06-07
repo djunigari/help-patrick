@@ -1,7 +1,8 @@
 import { Post } from '@atoms/postsAtom'
-import { Grid, GridItem, Input, InputGroup, InputLeftElement, InputRightElement } from '@chakra-ui/react'
+import { Button, Flex, Grid, GridItem, Icon, Input, Stack, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { BsHash, BsPlusCircle } from 'react-icons/bs'
+import { FiDelete } from 'react-icons/fi'
 
 interface FilterInputsProps {
     post: Post
@@ -10,40 +11,36 @@ interface FilterInputsProps {
 
 function FilterInputs({ post, setPost }: FilterInputsProps) {
     const [tag, setTag] = useState<string>('')
+
+    const addTag = (tag: string) => {
+        if (!post.tags?.includes(tag)) {
+            setPost({ ...post, tags: [...(post.tags || []), tag] })
+        }
+        setTag('')
+    }
+
+    const removeTag = (tag: string) => {
+        if (post.tags?.includes(tag)) {
+            setPost({ ...post, tags: post.tags.filter(item => item !== tag) })
+        }
+    }
+
     return (
-        <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gap={2}>
+        <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gap={3}>
             <GridItem>
                 <Input
                     name='category'
-                    value={post.title}
+                    value={post.category}
                     onChange={(event) => setPost({ ...post, category: event.target.value })}
-                    fontSize='10pt'
-                    borderRadius={4}
                     placeholder='Categoria'
-                    _placeholder={{ color: 'gray.500' }}
-                    _hover={{
-                        outline: 'none',
-                        bg: 'white',
-                        border: '1px solid',
-                        borderColor: 'black'
-                    }}
                 />
             </GridItem>
             <GridItem>
                 <Input
                     name='subcategory'
-                    value={post.title}
+                    value={post.subcategory}
                     onChange={(event) => setPost({ ...post, subcategory: event.target.value })}
-                    fontSize='10pt'
-                    borderRadius={4}
                     placeholder='SubCategoria'
-                    _placeholder={{ color: 'gray.500' }}
-                    _hover={{
-                        outline: 'none',
-                        bg: 'white',
-                        border: '1px solid',
-                        borderColor: 'black'
-                    }}
                 />
             </GridItem>
             <GridItem>
@@ -56,44 +53,48 @@ function FilterInputs({ post, setPost }: FilterInputsProps) {
                         name='tag'
                         value={tag}
                         onChange={(event) => setTag(event.target.value)}
-                        fontSize='10pt'
-                        color='orange'
-                        borderRadius={4}
                         placeholder='Adicionar # Tag'
-                        _placeholder={{ color: 'gray.500' }}
-                        _hover={{
-                            outline: 'none',
-                            bg: 'white',
-                            border: '1px solid',
-                            borderColor: 'black'
-                        }}
-
                     />
-                    <InputRightElement
-                        bg='gray.200'
-                        children={<BsPlusCircle color="orange" />}
-                        cursor='pointer'
-                        onClick={() => setPost({ ...post, tags: [...(post.tags || []), tag] })}
-                    />
+                    <InputRightElement>
+                        <Button
+                            mr={2}
+                            size='sm'
+                            bg='orange'
+                            _hover={{ bg: 'orange.200' }}
+                            onClick={() => addTag(tag)}
+                        >
+                            <Icon as={BsPlusCircle} fontSize='sm' />
+                        </Button>
+                    </InputRightElement>
                 </InputGroup>
             </GridItem>
-            <GridItem colSpan={{ base: 1, md: 3 }}>
-                <Input
-                    name='tags'
-                    value={post.tags}
-                    readOnly
-                    fontSize='10pt'
-                    borderRadius={4}
-                    placeholder='Title'
-                    _placeholder={{ color: 'gray.500' }}
-                    _hover={{
-                        outline: 'none',
-                        bg: 'white',
-                        border: '1px solid',
-                        borderColor: 'black'
-                    }}
-                />
-            </GridItem>
+            {post.tags && post.tags.length > 0 && (
+                <GridItem colSpan={{ base: 1, md: 3 }}>
+                    <Stack direction='row' >
+                        {post.tags?.map(item => (
+                            <Flex
+                                key={item}
+                                p={2}
+                                borderRadius='md'
+                                align='center'
+                                border='1px dashed'
+                                color='gray.400'
+                            >
+                                <Text
+                                    fontSize='sm'
+                                    fontWeight='semibold'
+                                    color='orange'
+                                >
+                                    {`#${item} `}
+                                </Text>
+                                <Icon ml={1} as={FiDelete} color='red' cursor='pointer'
+                                    onClick={() => removeTag(item)}
+                                />
+                            </Flex>
+                        ))}
+                    </Stack>
+                </GridItem>
+            )}
         </Grid>
     )
 }

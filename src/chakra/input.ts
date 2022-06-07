@@ -2,25 +2,18 @@ import { ComponentStyleConfig } from '@chakra-ui/theme'
 
 export const Input: ComponentStyleConfig = {
     baseStyle: {
-        borderRadius: 'md',
-        fontSize: "sm",
-        fontWeight: 'bold',
-        _focus: {
-            boxShadow: "none",
-        },
-    },
-    variants: {
-        'entrance': {
-            color: "red",
-            bg: "blue.500",
+        field: {
+            border: "1px solid",
+            borderColor: "gray.400",
+            bg: 'gray.50',
             _placeholder: { color: 'gray.500' },
-            _hover: {
+            _focus: {
                 outline: 'none',
-                bg: 'white',
                 border: '1px solid',
-                borderColor: 'black'
-            }
+                borderColor: 'blue.500',
+                boxShadow: 'none'
+            },
 
-        }
+        },
     },
 };
