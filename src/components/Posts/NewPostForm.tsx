@@ -3,7 +3,7 @@ import { Alert, AlertIcon, Button, Flex, Stack, Text } from '@chakra-ui/react'
 import CropperImage from '@components/Layout/CropperImage/CropperImage'
 import { firestore } from '@firebase/clientApp'
 import { User } from 'firebase/auth'
-import { addDoc, collection, deleteDoc, DocumentReference, serverTimestamp, Timestamp } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, DocumentReference, serverTimestamp, setDoc, Timestamp } from 'firebase/firestore'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSelectFile from '../../hooks/useSelectFile'
@@ -36,7 +36,7 @@ function NewPostForm({ user }: NewPostFormProps) {
             subcategory: ''
         })
 
-    const { selectedFiles, setSelectedFiles, onSelectFile, updateAllFiles, cleanFiles } = useSelectFile()
+    const { selectedFiles, setSelectedFiles, onSelectFile, uploadAllFiles, cleanFiles } = useSelectFile()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
@@ -47,7 +47,11 @@ function NewPostForm({ user }: NewPostFormProps) {
             //store the post in db
             postDocRef = await addDoc(collection(firestore, 'posts'), post)
 
-            await updateAllFiles(postDocRef)
+            const urls = await uploadAllFiles(postDocRef)
+
+            await setDoc(postDocRef, {
+                imageUrls: urls
+            }, { merge: true })
 
             router.push(`/posts/${postDocRef.id}`)
         } catch (error: any) {

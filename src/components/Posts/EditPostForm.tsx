@@ -1,9 +1,10 @@
 import { Contact, Post } from '@atoms/postsAtom'
 import { Alert, AlertIcon, Button, Flex, Stack, Text } from '@chakra-ui/react'
 import CropperImage from '@components/Layout/CropperImage/CropperImage'
-import { firestore } from '@firebase/clientApp'
+import { firestore, storage } from '@firebase/clientApp'
 import { User } from 'firebase/auth'
-import { addDoc, collection, deleteDoc, DocumentReference, serverTimestamp, Timestamp } from 'firebase/firestore'
+import { collection, doc, DocumentReference, setDoc } from 'firebase/firestore'
+import { deleteObject, ref } from 'firebase/storage'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSelectFile from '../../hooks/useSelectFile'
@@ -22,34 +23,48 @@ function EditPostForm({ user, oldVersionPost }: EditPostFormProps) {
     const [contact, setContact] = useState<Contact>({ ...oldVersionPost.contact })
 
     const [post, setPost] = useState<Post>({ ...oldVersionPost })
+    const [images, setImages] = useState<string[]>([])
 
-    const { selectedFiles, setSelectedFiles, onSelectFile, updateAllFiles, cleanFiles } = useSelectFile()
+    const { selectedFiles, setSelectedFiles, onSelectFile, uploadAllFiles } = useSelectFile()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
-    const handleCreatePost = async () => {
+    const handleUpdatePost = async () => {
         setLoading(true)
         let postDocRef: DocumentReference | null = null
         try {
             //store the post in db
-            postDocRef = await addDoc(collection(firestore, 'posts'), post)
+            postDocRef = doc(collection(firestore, 'posts'), oldVersionPost.id)
 
-            await updateAllFiles(postDocRef)
+            const urls = await uploadAllFiles(postDocRef)
+
+            const removedImgs = oldVersionPost.imageUrls?.filter(item => !images.includes(item));
+            removedImgs?.map(item => {
+                const storageRef = ref(storage, item);
+                console.log(storageRef)
+                // Delete the file
+                deleteObject(storageRef).then(() => {
+                    console.log('Image deleted')
+                }).catch((error) => {
+                    console.log('Ocorreu um erro')
+                });
+            })
+
+            const postDodc = await setDoc(postDocRef, { ...post, imageUrls: [...images, ...(urls || [])] })
 
             router.push(`/posts/${postDocRef.id}`)
         } catch (error: any) {
-            console.log('handleCreatePost error', error.message)
-            if (postDocRef) await deleteDoc(postDocRef)
+            console.log('handleUpdatePost error', error.message)
             setError(true)
         }
-        cleanFiles()
+        router.push(`/posts/${post.id}`)
         setLoading(false)
     }
 
     useEffect(() => {
         if (oldVersionPost) {
             setPost({ ...oldVersionPost })
-            setSelectedFiles([...oldVersionPost.imageUrls || []])
+            setImages([...oldVersionPost.imageUrls || []])
         }
     }, [oldVersionPost])
 
@@ -65,6 +80,8 @@ function EditPostForm({ user, oldVersionPost }: EditPostFormProps) {
             <Stack p={4} direction='column' spacing={4}>
 
                 <ImageUpload
+                    images={images}
+                    setImages={setImages}
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                     onSelectFile={onSelectFile}
@@ -98,7 +115,7 @@ function EditPostForm({ user, oldVersionPost }: EditPostFormProps) {
                         padding='0px 30px'
                         disabled={!post.title}
                         isLoading={loading}
-                        onClick={handleCreatePost}
+                        onClick={handleUpdatePost}
                     >
                         Atualizar
                     </Button>

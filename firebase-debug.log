@@ -1,0 +1,153 @@
+[debug] [2022-06-08T04:17:49.340Z] ----------------------------------------------------------------------
+[debug] [2022-06-08T04:17:49.342Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2022-06-08T04:17:49.343Z] CLI Version:   11.0.1
+[debug] [2022-06-08T04:17:49.343Z] Platform:      darwin
+[debug] [2022-06-08T04:17:49.343Z] Node Version:  v16.15.1
+[debug] [2022-06-08T04:17:49.344Z] Time:          Wed Jun 08 2022 13:17:49 GMT+0900 (Japan Standard Time)
+[debug] [2022-06-08T04:17:49.345Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-06-08T04:17:49.413Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-06-08T04:17:49.414Z] > authorizing via signed-in user (igaridjun@gmail.com)
+[debug] [2022-06-08T04:17:49.414Z] [iam] checking project help-patrick for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2022-06-08T04:17:49.416Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/help-patrick:testIamPermissions [none]
+[debug] [2022-06-08T04:17:49.417Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/help-patrick:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2022-06-08T04:17:50.478Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/help-patrick:testIamPermissions 200
+[debug] [2022-06-08T04:17:50.478Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/help-patrick:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2022-06-08T04:17:50.479Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/help-patrick/serviceAccounts/help-patrick@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2022-06-08T04:17:50.479Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/help-patrick/serviceAccounts/help-patrick@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2022-06-08T04:17:51.541Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/help-patrick/serviceAccounts/help-patrick@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2022-06-08T04:17:51.542Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/help-patrick/serviceAccounts/help-patrick@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'help-patrick'...
+[info] 
+[info] i  deploying functions 
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
+[info] ✔  functions: Finished running predeploy script. 
+[debug] [2022-06-08T04:18:10.316Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick [none]
+[debug] [2022-06-08T04:18:11.071Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick 200
+[debug] [2022-06-08T04:18:11.071Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick {"projectId":"help-patrick","projectNumber":"255540423614","displayName":"Help Patrick","name":"projects/help-patrick","resources":{"hostingSite":"help-patrick","storageBucket":"help-patrick.appspot.com","locationId":"asia-northeast1"},"state":"ACTIVE"}
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[debug] [2022-06-08T04:18:11.074Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/cloudfunctions.googleapis.com [none]
+[debug] [2022-06-08T04:18:11.075Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/runtimeconfig.googleapis.com [none]
+[debug] [2022-06-08T04:18:11.076Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/cloudbuild.googleapis.com [none]
+[debug] [2022-06-08T04:18:11.078Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/artifactregistry.googleapis.com [none]
+[debug] [2022-06-08T04:18:12.473Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/artifactregistry.googleapis.com 200
+[debug] [2022-06-08T04:18:12.473Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/artifactregistry.googleapis.com [omitted]
+[debug] [2022-06-08T04:18:12.474Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/runtimeconfig.googleapis.com 200
+[debug] [2022-06-08T04:18:12.474Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2022-06-08T04:18:12.476Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/cloudfunctions.googleapis.com 200
+[debug] [2022-06-08T04:18:12.476Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/cloudfunctions.googleapis.com [omitted]
+[info] ✔  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2022-06-08T04:18:12.477Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/cloudbuild.googleapis.com 200
+[debug] [2022-06-08T04:18:12.477Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/help-patrick/services/cloudbuild.googleapis.com [omitted]
+[info] ✔  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2022-06-08T04:18:12.478Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick/adminSdkConfig [none]
+[debug] [2022-06-08T04:18:12.961Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick/adminSdkConfig 200
+[debug] [2022-06-08T04:18:12.962Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick/adminSdkConfig {"projectId":"help-patrick","storageBucket":"help-patrick.appspot.com","locationId":"asia-northeast1"}
+[debug] [2022-06-08T04:18:12.963Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/help-patrick/configs [none]
+[debug] [2022-06-08T04:18:13.987Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/help-patrick/configs 200
+[debug] [2022-06-08T04:18:13.988Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/help-patrick/configs {}
+[info] i  functions: preparing codebase default for deployment 
+[debug] [2022-06-08T04:18:13.992Z] Validating nodejs source
+[debug] [2022-06-08T04:18:15.949Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-08T04:18:15.950Z] Building nodejs source
+[debug] [2022-06-08T04:18:15.954Z] Analyzing nodejs backend spec
+[debug] [2022-06-08T04:18:15.955Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-08T04:18:16.307Z] Serving at port 9005
+
+[debug] [2022-06-08T04:18:16.392Z] Got response from /__/functions.yaml {"endpoints":{"onDeletePost":{"platform":"gcfv1","eventTrigger":{"eventType":"providers/cloud.firestore/eventTypes/document.delete","eventFilters":{"resource":"projects/help-patrick/databases/(default)/documents/posts/{postId}"},"retry":false},"labels":{},"entryPoint":"onDeletePost"}},"specVersion":"v1alpha1","requiredAPIs":[]}
+[debug] [2022-06-08T04:18:16.407Z] shutdown requested via /__/quitquitquit
+
+[info] i  functions: preparing functions directory for uploading... 
+[info] i  functions: packaged /Users/alexandreigari/Desktop/projetos/help-patrick/functions (94.82 KB) for uploading 
+[debug] [2022-06-08T04:18:16.493Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/-/functions [none]
+[debug] [2022-06-08T04:18:17.432Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/-/functions 200
+[debug] [2022-06-08T04:18:17.433Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/-/functions {"functions":[{"name":"projects/help-patrick/locations/us-central1/functions/deletePhoto","eventTrigger":{"eventType":"providers/cloud.firestore/eventTypes/document.update","resource":"projects/help-patrick/databases/(default)/documents/posts/{postId}","service":"firestore.googleapis.com","failurePolicy":{}},"status":"ACTIVE","entryPoint":"deletePhoto","timeout":"60s","availableMemoryMb":256,"serviceAccountEmail":"help-patrick@appspot.gserviceaccount.com","updateTime":"2022-06-08T04:03:12.219Z","versionId":"3","labels":{"deployment-tool":"cli-firebase"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/ef7ff12d-11d0-4c0c-9932-93e6a810272c.zip","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"help-patrick\",\"storageBucket\":\"help-patrick.appspot.com\",\"locationId\":\"asia-northeast1\"}","GCLOUD_PROJECT":"help-patrick"},"runtime":"nodejs16","ingressSettings":"ALLOW_ALL","buildId":"d5c38455-456f-463d-8956-d8531fd6866d","buildName":"projects/255540423614/locations/us-central1/builds/d5c38455-456f-463d-8956-d8531fd6866d","dockerRegistry":"CONTAINER_REGISTRY"},{"name":"projects/help-patrick/locations/us-central1/functions/onDeletePost","eventTrigger":{"eventType":"providers/cloud.firestore/eventTypes/document.delete","resource":"projects/help-patrick/databases/(default)/documents/posts/{postId}","service":"firestore.googleapis.com","failurePolicy":{}},"status":"ACTIVE","entryPoint":"onDeletePost","timeout":"60s","availableMemoryMb":256,"serviceAccountEmail":"help-patrick@appspot.gserviceaccount.com","updateTime":"2022-06-08T04:03:44.050Z","versionId":"7","labels":{"deployment-tool":"cli-firebase"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/ef7ff12d-11d0-4c0c-9932-93e6a810272c.zip","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"help-patrick\",\"storageBucket\":\"help-patrick.appspot.com\",\"locationId\":\"asia-northeast1\"}","GCLOUD_PROJECT":"help-patrick"},"runtime":"nodejs16","ingressSettings":"ALLOW_ALL","buildId":"d5c38455-456f-463d-8956-d8531fd6866d","buildName":"projects/255540423614/locations/us-central1/builds/d5c38455-456f-463d-8956-d8531fd6866d","dockerRegistry":"CONTAINER_REGISTRY"}]}
+[debug] [2022-06-08T04:18:17.434Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v2alpha/projects/help-patrick/locations/-/functions [none]
+[debug] [2022-06-08T04:18:19.250Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v2alpha/projects/help-patrick/locations/-/functions 200
+[debug] [2022-06-08T04:18:19.250Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v2alpha/projects/help-patrick/locations/-/functions {}
+[debug] [2022-06-08T04:18:19.262Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick [none]
+[debug] [2022-06-08T04:18:19.896Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick 200
+[debug] [2022-06-08T04:18:19.896Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/help-patrick {"projectId":"help-patrick","projectNumber":"255540423614","displayName":"Help Patrick","name":"projects/help-patrick","resources":{"hostingSite":"help-patrick","storageBucket":"help-patrick.appspot.com","locationId":"asia-northeast1"},"state":"ACTIVE"}
+[debug] [2022-06-08T04:18:19.897Z] >>> [apiv2][query] POST https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/us-central1/functions:generateUploadUrl [none]
+[debug] [2022-06-08T04:18:19.897Z] >>> [apiv2][body] POST https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/us-central1/functions:generateUploadUrl {}
+[debug] [2022-06-08T04:18:21.088Z] <<< [apiv2][status] POST https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/us-central1/functions:generateUploadUrl 200
+[debug] [2022-06-08T04:18:21.088Z] <<< [apiv2][body] POST https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/us-central1/functions:generateUploadUrl {"uploadUrl":"https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/4f2c53d6-b535-4cb5-afc3-c262238ef0fd.zip?GoogleAccessId=service-255540423614@gcf-admin-robot.iam.gserviceaccount.com&Expires=1654663700&Signature=rcnflwlr5fiODZmSpmc%2BdzMiLu3lMM%2Bxu5m4MoaPfXYivIBqG%2BFKtH2WXUxkLU8I9llLqSIbF6n1Fre%2FgDnqYo5X3nD%2B1Q9zk7Nox9H8vepCuvmH7SK34HTmyGYKUPnRkgz5oYiIVhLFbtXw6qLAsmFIvgamcFw9DT0EXn%2Fkr%2FxxCZNyQjNX%2FvZ2ZTN9m%2BcKVy6Qz%2F3fhpS5KX46ejh9Y2C4WIeXEm9VcYJvS4lYREPWhebObzHNlwH7DVZsSdGnOGDfcY7KO4Wt1Ze3J8AnBMeILhKTp2ARu8ocwfBoHpXpQK2PO5qvnerDVXQ0dseHnNpQpuN5Be2D0mwosVQaAw%3D%3D"}
+[debug] [2022-06-08T04:18:21.090Z] >>> [apiv2][query] PUT https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/4f2c53d6-b535-4cb5-afc3-c262238ef0fd.zip GoogleAccessId=service-255540423614%40gcf-admin-robot.iam.gserviceaccount.com&Expires=1654663700&Signature=rcnflwlr5fiODZmSpmc%2BdzMiLu3lMM%2Bxu5m4MoaPfXYivIBqG%2BFKtH2WXUxkLU8I9llLqSIbF6n1Fre%2FgDnqYo5X3nD%2B1Q9zk7Nox9H8vepCuvmH7SK34HTmyGYKUPnRkgz5oYiIVhLFbtXw6qLAsmFIvgamcFw9DT0EXn%2Fkr%2FxxCZNyQjNX%2FvZ2ZTN9m%2BcKVy6Qz%2F3fhpS5KX46ejh9Y2C4WIeXEm9VcYJvS4lYREPWhebObzHNlwH7DVZsSdGnOGDfcY7KO4Wt1Ze3J8AnBMeILhKTp2ARu8ocwfBoHpXpQK2PO5qvnerDVXQ0dseHnNpQpuN5Be2D0mwosVQaAw%3D%3D
+[debug] [2022-06-08T04:18:21.090Z] >>> [apiv2][body] PUT https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/4f2c53d6-b535-4cb5-afc3-c262238ef0fd.zip [stream]
+[debug] [2022-06-08T04:18:21.861Z] <<< [apiv2][status] PUT https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/4f2c53d6-b535-4cb5-afc3-c262238ef0fd.zip 200
+[debug] [2022-06-08T04:18:21.861Z] <<< [apiv2][body] PUT https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/4f2c53d6-b535-4cb5-afc3-c262238ef0fd.zip [omitted]
+[info] ✔  functions: functions folder uploaded successfully 
+[info] 
+The following functions are found in your project but do not exist in your local source code:
+	deletePhoto(us-central1)
+
+If you are renaming a function or changing its region, it is recommended that you create the new function first before deleting the old one to prevent event loss. For more info, visit https://firebase.google.com/docs/functions/manage-functions#modify
+
+[info] i  functions: updating Node.js 16 function onDeletePost(us-central1)... 
+[debug] [2022-06-08T05:10:32.316Z] > refreshing access token with scopes: []
+[debug] [2022-06-08T05:10:32.319Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-06-08T05:10:33.730Z] <<< HTTP RESPONSE 200 {"date":"Wed, 08 Jun 2022 05:10:33 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-06-08T05:10:33.778Z] >>> [apiv2][query] PATCH https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/us-central1/functions/onDeletePost updateMask=name%2CsourceUploadUrl%2CentryPoint%2Cruntime%2Clabels%2CeventTrigger.eventType%2CeventTrigger.resource%2CeventTrigger.failurePolicy%2CavailableMemoryMb%2CenvironmentVariables%2CsourceToken
+[debug] [2022-06-08T05:10:33.778Z] >>> [apiv2][body] PATCH https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/us-central1/functions/onDeletePost {"name":"projects/help-patrick/locations/us-central1/functions/onDeletePost","sourceUploadUrl":"https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/4f2c53d6-b535-4cb5-afc3-c262238ef0fd.zip?GoogleAccessId=service-255540423614@gcf-admin-robot.iam.gserviceaccount.com&Expires=1654663700&Signature=rcnflwlr5fiODZmSpmc%2BdzMiLu3lMM%2Bxu5m4MoaPfXYivIBqG%2BFKtH2WXUxkLU8I9llLqSIbF6n1Fre%2FgDnqYo5X3nD%2B1Q9zk7Nox9H8vepCuvmH7SK34HTmyGYKUPnRkgz5oYiIVhLFbtXw6qLAsmFIvgamcFw9DT0EXn%2Fkr%2FxxCZNyQjNX%2FvZ2ZTN9m%2BcKVy6Qz%2F3fhpS5KX46ejh9Y2C4WIeXEm9VcYJvS4lYREPWhebObzHNlwH7DVZsSdGnOGDfcY7KO4Wt1Ze3J8AnBMeILhKTp2ARu8ocwfBoHpXpQK2PO5qvnerDVXQ0dseHnNpQpuN5Be2D0mwosVQaAw%3D%3D","entryPoint":"onDeletePost","runtime":"nodejs16","labels":{"deployment-tool":"cli-firebase"},"eventTrigger":{"eventType":"providers/cloud.firestore/eventTypes/document.delete","resource":"projects/help-patrick/databases/(default)/documents/posts/{postId}"},"availableMemoryMb":256,"environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"help-patrick\",\"storageBucket\":\"help-patrick.appspot.com\",\"locationId\":\"asia-northeast1\"}","GCLOUD_PROJECT":"help-patrick"}}
+[debug] [2022-06-08T05:10:34.911Z] <<< [apiv2][status] PATCH https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/us-central1/functions/onDeletePost 200
+[debug] [2022-06-08T05:10:34.911Z] <<< [apiv2][body] PATCH https://cloudfunctions.googleapis.com/v1/projects/help-patrick/locations/us-central1/functions/onDeletePost {"name":"operations/aGVscC1wYXRyaWNrL3VzLWNlbnRyYWwxL29uRGVsZXRlUG9zdC9xTlRieEFxc1hZMA","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/help-patrick/locations/us-central1/functions/onDeletePost","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/help-patrick/locations/us-central1/functions/onDeletePost","eventTrigger":{"eventType":"providers/cloud.firestore/eventTypes/document.delete","resource":"projects/help-patrick/databases/(default)/documents/posts/{postId}","service":"firestore.googleapis.com"},"status":"ACTIVE","entryPoint":"onDeletePost","timeout":"60s","availableMemoryMb":256,"serviceAccountEmail":"help-patrick@appspot.gserviceaccount.com","updateTime":"2022-06-08T04:03:44.050Z","versionId":"7","labels":{"deployment-tool":"cli-firebase"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/4f2c53d6-b535-4cb5-afc3-c262238ef0fd.zip?GoogleAccessId=service-255540423614@gcf-admin-robot.iam.gserviceaccount.com&Expires=1654663700&Signature=rcnflwlr5fiODZmSpmc%2BdzMiLu3lMM%2Bxu5m4MoaPfXYivIBqG%2BFKtH2WXUxkLU8I9llLqSIbF6n1Fre%2FgDnqYo5X3nD%2B1Q9zk7Nox9H8vepCuvmH7SK34HTmyGYKUPnRkgz5oYiIVhLFbtXw6qLAsmFIvgamcFw9DT0EXn%2Fkr%2FxxCZNyQjNX%2FvZ2ZTN9m%2BcKVy6Qz%2F3fhpS5KX46ejh9Y2C4WIeXEm9VcYJvS4lYREPWhebObzHNlwH7DVZsSdGnOGDfcY7KO4Wt1Ze3J8AnBMeILhKTp2ARu8ocwfBoHpXpQK2PO5qvnerDVXQ0dseHnNpQpuN5Be2D0mwosVQaAw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"help-patrick\",\"storageBucket\":\"help-patrick.appspot.com\",\"locationId\":\"asia-northeast1\"}","GCLOUD_PROJECT":"help-patrick"},"runtime":"nodejs16","ingressSettings":"ALLOW_ALL","buildId":"d5c38455-456f-463d-8956-d8531fd6866d","buildName":"projects/255540423614/locations/us-central1/builds/d5c38455-456f-463d-8956-d8531fd6866d","dockerRegistry":"CONTAINER_REGISTRY"},"versionId":"8","updateTime":"2022-06-08T05:10:34Z"}}
+[debug] [2022-06-08T05:10:34.912Z] >>> [apiv2][query] GET https://cloudfunctions.googleapis.com/v1/operations/aGVscC1wYXRyaWNrL3VzLWNlbnRyYWwxL29uRGVsZXRlUG9zdC9xTlRieEFxc1hZMA [none]
+[debug] [2022-06-08T05:10:35.741Z] <<< [apiv2][status] GET https://cloudfunctions.googleapis.com/v1/operations/aGVscC1wYXRyaWNrL3VzLWNlbnRyYWwxL29uRGVsZXRlUG9zdC9xTlRieEFxc1hZMA 200
+[debug] [2022-06-08T05:10:35.742Z] <<< [apiv2][body] GET https://cloudfunctions.googleapis.com/v1/operations/aGVscC1wYXRyaWNrL3VzLWNlbnRyYWwxL29uRGVsZXRlUG9zdC9xTlRieEFxc1hZMA {"name":"operations/aGVscC1wYXRyaWNrL3VzLWNlbnRyYWwxL29uRGVsZXRlUG9zdC9xTlRieEFxc1hZMA","metadata":{"@type":"type.googleapis.com/google.cloud.functions.v1.OperationMetadataV1","target":"projects/help-patrick/locations/us-central1/functions/onDeletePost","type":"UPDATE_FUNCTION","request":{"@type":"type.googleapis.com/google.cloud.functions.v1.CloudFunction","name":"projects/help-patrick/locations/us-central1/functions/onDeletePost","eventTrigger":{"eventType":"providers/cloud.firestore/eventTypes/document.delete","resource":"projects/help-patrick/databases/(default)/documents/posts/{postId}","service":"firestore.googleapis.com"},"status":"ACTIVE","entryPoint":"onDeletePost","timeout":"60s","availableMemoryMb":256,"serviceAccountEmail":"help-patrick@appspot.gserviceaccount.com","updateTime":"2022-06-08T04:03:44.050Z","versionId":"7","labels":{"deployment-tool":"cli-firebase"},"sourceUploadUrl":"https://storage.googleapis.com/uploads-88235568063.us-central1.cloudfunctions.appspot.com/4f2c53d6-b535-4cb5-afc3-c262238ef0fd.zip?GoogleAccessId=service-255540423614@gcf-admin-robot.iam.gserviceaccount.com&Expires=1654663700&Signature=rcnflwlr5fiODZmSpmc%2BdzMiLu3lMM%2Bxu5m4MoaPfXYivIBqG%2BFKtH2WXUxkLU8I9llLqSIbF6n1Fre%2FgDnqYo5X3nD%2B1Q9zk7Nox9H8vepCuvmH7SK34HTmyGYKUPnRkgz5oYiIVhLFbtXw6qLAsmFIvgamcFw9DT0EXn%2Fkr%2FxxCZNyQjNX%2FvZ2ZTN9m%2BcKVy6Qz%2F3fhpS5KX46ejh9Y2C4WIeXEm9VcYJvS4lYREPWhebObzHNlwH7DVZsSdGnOGDfcY7KO4Wt1Ze3J8AnBMeILhKTp2ARu8ocwfBoHpXpQK2PO5qvnerDVXQ0dseHnNpQpuN5Be2D0mwosVQaAw%3D%3D","environmentVariables":{"FIREBASE_CONFIG":"{\"projectId\":\"help-patrick\",\"storageBucket\":\"help-patrick.appspot.com\",\"locationId\":\"asia-northeast1\"}","GCLOUD_PROJECT":"help-patrick"},"runtime":"nodejs16","ingressSettings":"ALLOW_ALL","buildId":"d5c38455-456f-463d-8956-d8531fd6866d","buildName":"projects/255540423614/locations/us-central1/builds/d5c38455-456f-463d-8956-d8531fd6866d","dockerRegistry":"CONTAINER_REGISTRY"},"versionId":"8","updateTime":"2022-06-08T05:10:35Z"},"done":true,"error":{"code":3,"message":"Failed to verify the provided Cloud Storage Signed URL"}}
+[debug] [2022-06-08T05:10:35.742Z] Got source token undefined for region us-central1
+[error] Failed to verify the provided Cloud Storage Signed URL
+[debug] [2022-06-08T05:10:35.750Z] Total Function Deployment time: 3437
+[debug] [2022-06-08T05:10:35.750Z] 2 Functions Deployed
+[debug] [2022-06-08T05:10:35.750Z] 1 Functions Errored
+[debug] [2022-06-08T05:10:35.750Z] 1 Function Deployments Aborted
+[debug] [2022-06-08T05:10:35.750Z] Average Function Deployment time: 3432
+[info] 
+[info] Functions deploy had errors with the following functions:
+	onDeletePost(us-central1)
+[info] 
+[info] Because there were errors creating or updating functions, the following functions were not deleted
+	deletePhoto(us-central1)
+[info] To delete these, use firebase functions:delete
+[info] i  functions: cleaning up build files... 
+[debug] [2022-06-08T05:10:36.088Z] >>> [apiv2][query] GET https://us.gcr.io/v2/help-patrick/gcf/us-central1/tags/list [none]
+[debug] [2022-06-08T05:10:37.503Z] <<< [apiv2][status] GET https://us.gcr.io/v2/help-patrick/gcf/us-central1/tags/list 200
+[debug] [2022-06-08T05:10:37.503Z] <<< [apiv2][body] GET https://us.gcr.io/v2/help-patrick/gcf/us-central1/tags/list {"child":[],"manifest":{},"name":"help-patrick/gcf/us-central1","tags":[]}
+[debug] [2022-06-08T05:10:37.504Z] Could not find image for function projects/help-patrick/locations/us-central1/functions/onDeletePost
+[debug] [2022-06-08T05:10:37.504Z] Could not find image for function projects/help-patrick/locations/us-central1/functions/deletePhoto
+[error] Error: There was an error deploying functions:
+[error] - Error Failed to update function onDeletePost in region us-central1
+[error] - Error Failed to delete function deletePhoto in region us-central1

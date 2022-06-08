@@ -1,8 +1,7 @@
 import { storage } from "@firebase/clientApp"
-import { async } from "@firebase/util"
-import { DocumentReference, updateDoc } from "firebase/firestore"
-import { getDownloadURL, ref, uploadBytes, uploadString } from "firebase/storage"
-import { useState, ChangeEvent, useEffect } from "react"
+import { DocumentReference } from "firebase/firestore"
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
+import { ChangeEvent, useEffect, useState } from "react"
 import { v4 as uuid } from "uuid"
 
 function useSelectFile() {
@@ -24,14 +23,12 @@ function useSelectFile() {
         event.target.value = ''
     }
 
-    const updateAllFiles = async (postDocRef: DocumentReference) => {
+    const uploadAllFiles = async (postDocRef: DocumentReference) => {
         if (!postDocRef) throw new Error('updateFile error do not have post to upload the image')
         try {
             const promises = selectedFiles.map(async (file) => await updateFile(file, postDocRef))
-            const urls = await Promise.all(promises)
-            await updateDoc(postDocRef, {
-                imageUrls: urls
-            })
+
+            return Promise.all(promises)
         } catch (error: any) {
             console.log('updateAllFiles error', error.message)
         }
@@ -76,7 +73,7 @@ function useSelectFile() {
         onSelectFile,
         selectedFiles,
         setSelectedFiles,
-        updateAllFiles,
+        uploadAllFiles,
         cleanFiles
     }
 }
