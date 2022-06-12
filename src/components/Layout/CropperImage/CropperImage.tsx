@@ -35,7 +35,8 @@ function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [imageSrc, setImageSrc] = useState<string | null>(null)
-    const [crop, setCrop] = useState({ x: 0, y: 0 })
+    const [crop, setCrop] = useState({ x: 0, y: 0, })
+    const [onCropSize, setOnCropSize] = useState({ width: 520, height: 520 })
     const [rotation, setRotation] = useState(0)
     const [zoom, setZoom] = useState(1)
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
@@ -95,7 +96,7 @@ function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
                     <Box
                         position='relative'
                         width='100%'
-                        height={{ base: '200px', sm: '400px' }}
+                        height={{ base: '200px', sm: '520px' }}
                         bg='#333'
                     >
                         <Cropper
@@ -103,6 +104,7 @@ function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
                             crop={crop}
                             rotation={rotation}
                             zoom={zoom}
+                            onCropSizeChange={setOnCropSize}
                             aspect={1}
                             onCropChange={setCrop}
                             onRotationChange={setRotation}

@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",
+    "dev-https": "local-ssl-proxy --key localhost-key.pem --cert localhost.pem --source 4001 --target 3001",
     "build": "next build",
-    "start": "next start"
+    "start": "next HTTPS=true react-scripts start"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",

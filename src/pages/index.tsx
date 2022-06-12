@@ -1,7 +1,6 @@
 import { Post } from '@atoms/postsAtom'
-import { AspectRatio, Grid, GridItem, Stack } from '@chakra-ui/react'
+import { Grid, GridItem, Stack } from '@chakra-ui/react'
 import CreatePostLink from '@components/Community/CreatePostLink'
-import PersonalHome from '@components/Community/PersonalHome'
 import Premium from '@components/Community/Premium'
 import PageContent from '@components/Layout/PageContent'
 import PostItem from '@components/Posts/PostItem/PostItem'

@@ -17,8 +17,8 @@ function Navbar() {
                 onClick={() => router.push('/')}
                 cursor='pointer'
             >
-                <Image src='/images/redditFace.svg' height='30px' alt='Logo Image'/>
-                <Image src='/images/redditText.svg' height='46px' display={{ base: 'none', md: 'unset' }} alt='Logo Image' />
+                <Image src='/images/olajapao-logo2.png' height='30px' alt='Logo Image' />
+                {/* <Image src='/images/redditText.svg' height='46px' display={{ base: 'none', md: 'unset' }} alt='Logo Image' /> */}
             </Flex>
             <SearchInput user={user} />
             <RightContent user={user} />
