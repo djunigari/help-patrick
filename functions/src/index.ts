@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 admin.initializeApp();
+const db = admin.firestore()
 
 const bucketName = "gs://help-patrick.appspot.com";
 
@@ -28,3 +29,54 @@ exports.onDeletePost = functions.firestore
         console.error(`Error occurred while deleting the folder: ${folder}`, err);
       });
     });
+
+export const createUserDocument = functions.auth.user().onCreate(
+    async (user) => {
+      try {
+        const newUser = {
+          email: user.email,
+          displayName: user.displayName,
+          providerData: user.providerData,
+          createdAt: admin.firestore.Timestamp.now(),
+          status: "pending",
+          roles: ["normal"],
+        };
+        // Needs transaction future feature
+        await updateUserInvitationAsUserCreated(user.email as string);
+
+        await db.collection("users").doc(user.uid).set(newUser);
+
+        await updateTotalUserCounter(1);
+      } catch (error: any) {
+        throw new Error(error.message);
+      }
+    });
+  
+async function updateTotalUserCounter(delta: number) {
+  await db.doc("counters/totalUserCreated").set({totalUsers: admin.firestore.FieldValue.increment(1)}, {merge: true});
+}
+
+async function updateUserInvitationAsUserCreated(email: string) {
+  const invitationsRef = await db.collection("invitations").where("email", "==", email).get();
+
+  if (invitationsRef.empty) throw new Error(`Invitation do not exist for email:${email}`);
+
+  const invitationDocRef = invitationsRef.docs[0];
+  await db.collection("invitations").doc(invitationDocRef.id).update({isAccountCreated: true});
+}
+
+export const updateTotalInvitation = functions.firestore.document("invitations/{invitationId}").onCreate(async (snapshot, context) => {
+  const invitationData = snapshot.data();
+  if (!invitationData) return null;
+
+  // send a message to the email
+  console.log("invitation created");
+
+  await updateInvitationCouter(1);
+
+  return snapshot;
+});
+
+async function updateInvitationCouter(delta: number) {
+  await db.doc("counters/totalInvitation").set({totalInvitation: admin.firestore.FieldValue.increment(1)}, {merge: true});
+}
