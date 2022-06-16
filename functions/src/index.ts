@@ -62,6 +62,7 @@ export const beforeCreate = functions.auth.user().beforeCreate(
         }
     });
 
+//Identity Platform console -> Configurações -> Gatilhos
 export const beforeSignIn = functions.handler.auth.user.beforeSignIn(
     async (user, context) => {
         console.log('accessToken: ', context.credential?.accessToken)
