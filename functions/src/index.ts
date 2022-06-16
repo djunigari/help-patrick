@@ -36,19 +36,22 @@ exports.onDeletePost = functions.firestore
 //https://cloud.google.com/identity-platform/docs/blocking-functions
 //https://www.youtube.com/watch?v=BGCLPiR_0Lg&t=2148s
 export const beforeCreate = functions.auth.user().beforeCreate(
-    async (user) => {
+    async (user, context) => {
         try {
-            console.log(JSON.stringify(user, null, 2));
+            // console.log(JSON.stringify(user, null, 2));
 
             const doc = await db.collection('authorizedEmails').doc(user.email as string).get()
             if (doc.exists) {
-                let response = {
-                    customClaims: {
-                        test_user: true
-                    }
-                };
-                console.log(JSON.stringify(response, null, 2))
-                return response;
+                // let response = {
+                //     customClaims: {
+                //         test_user: true
+                //     }
+                // };
+                // console.log(JSON.stringify(response, null, 2))
+                if (context.credential && context.credential.providerId === 'facebook.com') {
+                    console.log('accessToken: ', context.credential.accessToken)
+                }
+                // return response;
             } else {
                 // Block sign-up for unauthorized emails.
                 throw new functions.https.HttpsError('invalid-argument', `Unauthorized email "${user.email}"`)
@@ -58,6 +61,17 @@ export const beforeCreate = functions.auth.user().beforeCreate(
             throw new Error(error.message);
         }
     });
+
+export const beforeSignIn = functions.handler.auth.user.beforeSignIn(
+    async (user, context) => {
+        console.log('accessToken: ', context.credential?.accessToken)
+        // verify status
+        return {
+            // If no display name is provided, set it to "Guest".
+            displayName: user.displayName || 'Guest'
+        };
+    }
+)
 
 export const createUserDocument = functions.auth.user().onCreate(
     async (user) => {
@@ -70,11 +84,7 @@ export const createUserDocument = functions.auth.user().onCreate(
                 status: "pending",
                 roles: ["normal"],
             };
-            // Needs transaction future feature
-            await updateUserInvitationAsUserCreated(user.email as string);
-
             await db.collection("users").doc(user.uid).set(newUser);
-
             await updateTotalUserCounter(1);
         } catch (error: any) {
             throw new Error(error.message);
@@ -83,29 +93,4 @@ export const createUserDocument = functions.auth.user().onCreate(
 
 async function updateTotalUserCounter(delta: number) {
     await db.doc("counters/totalUserCreated").set({ totalUsers: admin.firestore.FieldValue.increment(1) }, { merge: true });
-}
-
-async function updateUserInvitationAsUserCreated(email: string) {
-    const invitationsRef = await db.collection("invitations").where("email", "==", email).get();
-
-    if (invitationsRef.empty) throw new Error(`Invitation do not exist for email:${email}`);
-
-    const invitationDocRef = invitationsRef.docs[0];
-    await db.collection("invitations").doc(invitationDocRef.id).update({ isAccountCreated: true });
-}
-
-export const updateTotalInvitation = functions.firestore.document("invitations/{invitationId}").onCreate(async (snapshot, context) => {
-    const invitationData = snapshot.data();
-    if (!invitationData) return null;
-
-    // send a message to the email
-    console.log("invitation created");
-
-    await updateInvitationCouter(1);
-
-    return snapshot;
-});
-
-async function updateInvitationCouter(delta: number) {
-    await db.doc("counters/totalInvitation").set({ totalInvitation: admin.firestore.FieldValue.increment(1) }, { merge: true });
 }

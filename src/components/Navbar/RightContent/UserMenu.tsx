@@ -1,15 +1,14 @@
 import { ChevronDownIcon } from '@chakra-ui/icons'
-import { Flex, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react'
+import { Box, Flex, Icon, Img, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import { signOut, User } from 'firebase/auth'
 import { CgProfile } from 'react-icons/cg'
 import { FaRedditSquare } from 'react-icons/fa'
-import { VscAccount } from 'react-icons/vsc'
-import { MdOutlineLogin } from 'react-icons/md'
-import { auth } from '../../../firebase/clientApp'
-import { useResetRecoilState, useSetRecoilState } from 'recoil'
-import { authModalState } from '../../../atoms/authModal'
 import { IoSparkles } from 'react-icons/io5'
-import { communityState } from '../../../atoms/communitiesAtom'
+import { MdOutlineLogin } from 'react-icons/md'
+import { VscAccount } from 'react-icons/vsc'
+import { useSetRecoilState } from 'recoil'
+import { authModalState } from '../../../atoms/authModal'
+import { auth } from '../../../firebase/clientApp'
 
 interface UserMenuProps {
     user?: User | null
@@ -34,24 +33,14 @@ function UserMenu({ user }: UserMenuProps) {
                     <Flex align='center'>
                         {user ? (
                             <>
-                                <Icon fontSize={24} mr={1} color='gray.300' as={FaRedditSquare} />
-                                <Flex
-                                    direction='column'
-                                    display={{ base: 'none', lg: 'flex' }}
-                                    fontSize='8pt'
-                                    align='center'
-                                    mr={8}
-                                >
-                                    <Text fontWeight={700}>
-                                        {user?.displayName || user.email?.split('@')[0]}
-                                    </Text>
-                                    <Flex>
-                                        <Icon as={IoSparkles} color='brand.100' mr={1} />
-                                        <Text color='gray.400'>
-                                            1 karma
-                                        </Text>
-                                    </Flex>
-                                </Flex>
+                                {user.photoURL ? (
+                                    <Img src={user.photoURL} borderRadius='full' mr={2} height={8} />
+                                ) : (
+                                    <Icon fontSize={24} mr={1} color='gray.300' as={FaRedditSquare} />
+                                )}
+                                <Text display={{ base: 'none', lg: 'flex' }} fontWeight='semibold' mr={2} >
+                                    {user?.displayName || user.email?.split('@')[0]}
+                                </Text>
                             </>
                         ) : (
                             <Icon fontSize={24} color='gray.400' mr={1} as={VscAccount} />
