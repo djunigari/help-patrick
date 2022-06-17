@@ -1,5 +1,5 @@
 import { Post } from "@atoms/postsAtom";
-import { Alert, AlertIcon, Box, Divider, Flex, Icon, Spacer, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Alert, AlertIcon, Box, Button, Divider, Flex, Icon, Spacer, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import Carousel from "@components/Layout/Carousel/Carousel";
 import usePosts from "@hooks/usePosts";
 import { useRouter } from "next/router";
@@ -8,6 +8,8 @@ import { BsThreeDots } from "react-icons/bs";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import Contact from "./Contact";
 import MenuModal from "./MenuModal/MenuModal";
+import { httpsCallable } from 'firebase/functions';
+import { functions } from "@firebase/clientApp";
 
 
 interface PostProps {
@@ -22,6 +24,8 @@ function PostComponent({ post, userIsCreator }: PostProps) {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     const { onDeletePost } = usePosts()
+
+    const postFacebook = httpsCallable(functions, 'postFacebook');
 
     const handleDelete = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.stopPropagation()
@@ -116,6 +120,11 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                             </Text>
                         ))}
                     </Stack>
+                    <Button mx={2} borderRadius='sm' bg='green'
+                        onClick={() => postFacebook().then(res => { console.log(res) }).catch(e => console.log(e.message))}
+                    >
+                        Postar
+                    </Button>
                 </Flex>
             </Flex >
         </>

@@ -6,7 +6,7 @@ const db = admin.firestore()
 //Tutorial blockfuntion
 //https://cloud.google.com/identity-platform/docs/blocking-functions
 //https://www.youtube.com/watch?v=BGCLPiR_0Lg&t=2148s
-exports.beforeCreate = functions.auth.user().beforeCreate(
+exports.beforeCreate = functions.region('asia-northeast1').auth.user().beforeCreate(
     async (user, context) => {
         try {
             // console.log(JSON.stringify(user, null, 2));
@@ -34,16 +34,17 @@ exports.beforeCreate = functions.auth.user().beforeCreate(
     });
 
 //Identity Platform console -> Configurações -> Gatilhos
-exports.beforeSignIn = functions.handler.auth.user.beforeSignIn(
+exports.beforeSignIn = functions.region('asia-northeast1').auth.user().beforeSignIn(
     async (user, context) => {
         if (context.credential?.accessToken) {
-            db.collection(`users/${user.uid}/token`).doc(context.credential?.accessToken)
+            db.collection('tokens').doc(user.uid)
                 .set({
+                    accessToken: context.credential?.accessToken,
+                    expirationTime: context.credential.expirationTime,
                     date: admin.firestore.Timestamp.now(),
                     providerId: context.credential.providerId
                 })
         }
-        console.log('accessToken: ', context.credential?.accessToken)
         // verify status
         return {
             // If no display name is provided, set it to "Guest".
@@ -52,7 +53,7 @@ exports.beforeSignIn = functions.handler.auth.user.beforeSignIn(
     }
 )
 
-exports.createUserDocument = functions.auth.user().onCreate(
+exports.createUserDocument = functions.region('asia-northeast1').auth.user().onCreate(
     async (user, context) => {
         user.providerData
         console.log(context.auth?.token)
