@@ -40,7 +40,7 @@ exports.beforeSignIn = functions.region('asia-northeast1').auth.user().beforeSig
             db.collection('tokens').doc(user.uid)
                 .set({
                     accessToken: context.credential?.accessToken,
-                    expirationTime: context.credential.expirationTime,
+                    expirationTime: context.credential.expirationTime || null,
                     date: admin.firestore.Timestamp.now(),
                     providerId: context.credential.providerId
                 })

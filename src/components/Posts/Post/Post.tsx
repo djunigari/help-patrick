@@ -126,7 +126,7 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                         onClick={async () => {
                             console.log(user)
                             const token = await user?.getIdToken()
-                            const res = await fetch(`http://localhost:3001/api/hello`,
+                            const res = await fetch(`http://localhost:3001/api/facebook`,
                                 {
                                     method: 'GET',
                                     headers: {
@@ -134,7 +134,8 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                                     }
                                 }
                             )
-                            console.log(res.json())
+                            const data = await res.json()
+                            data.map((item: any) => console.log(item.id))
                         }}
                     >
                         Postar
