@@ -2,8 +2,6 @@ import getFacebookPagesId from 'backend/services/facebook/GetFacebookPagesId'
 import { auth } from 'backend/utils/firebase';
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-
-
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse

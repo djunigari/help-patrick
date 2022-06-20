@@ -6,9 +6,9 @@ export default async function getInstagramBusinessAccountId(userId: string, face
     const url = `${facebookUrl}/${facebookPageId}?fields=instagram_business_account&access_token=${accessToken}`
     try {
         const res = await fetch(url)
-        const json = res.json()
-        console.log(json)
-        return ''
+        const data = await res.json()
+        console.log(data)
+        return data
     } catch (error: any) {
         console.log('postFacebook', error.message)
         throw new Error('Facebook Request Error')
