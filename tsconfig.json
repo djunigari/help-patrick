@@ -20,6 +20,12 @@
     "incremental": true,
     "baseUrl": "src",
     "paths": {
+      "@middleware/*": [
+        "middleware/*"
+      ],
+      "@backend/*": [
+        "backend/*"
+      ],
       "@lib/*": [
         "lib/*"
       ],

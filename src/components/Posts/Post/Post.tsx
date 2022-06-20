@@ -9,7 +9,8 @@ import { IoPaperPlaneOutline } from "react-icons/io5";
 import Contact from "./Contact";
 import MenuModal from "./MenuModal/MenuModal";
 import { httpsCallable } from 'firebase/functions';
-import { functions } from "@firebase/clientApp";
+import { auth, functions } from "@firebase/clientApp";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 
 interface PostProps {
@@ -18,6 +19,7 @@ interface PostProps {
 }
 
 function PostComponent({ post, userIsCreator }: PostProps) {
+    const [user, loadingUser] = useAuthState(auth)
     const router = useRouter()
     const [loadingDelete, setLoadingDelete] = useState(false)
     const [error, setError] = useState(false)
@@ -25,7 +27,7 @@ function PostComponent({ post, userIsCreator }: PostProps) {
 
     const { onDeletePost } = usePosts()
 
-    const postFacebook = httpsCallable(functions, 'postFacebook');
+    // const postFacebook = httpsCallable(functions, 'postFacebook');
 
     const handleDelete = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.stopPropagation()
@@ -121,7 +123,19 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                         ))}
                     </Stack>
                     <Button mx={2} borderRadius='sm' bg='green'
-                        onClick={() => postFacebook().then(res => { console.log(res) }).catch(e => console.log(e.message))}
+                        onClick={async () => {
+                            console.log(user)
+                            const token = await user?.getIdToken()
+                            const res = await fetch(`http://localhost:3001/api/hello`,
+                                {
+                                    method: 'GET',
+                                    headers: {
+                                        'token': token as string
+                                    }
+                                }
+                            )
+                            console.log(res.json())
+                        }}
                     >
                         Postar
                     </Button>

@@ -7,15 +7,13 @@ import { useSignInWithFacebook } from 'react-firebase-hooks/auth';
 function OAuthButtons() {
     // const [signInWithGoogle, userCred, loading, error] = useSignInWithGoogle(auth);
     const [signInWithFacebook, userCred, loading, error] = useSignInWithFacebook(auth);
-    const [accessToken, setAccessToken] = useState<string>('')
+
 
     useEffect(() => {
         if (userCred) {
             const credential = FacebookAuthProvider.credentialFromResult(userCred);
-            setAccessToken(credential?.accessToken || '')
             console.log(credential?.accessToken)
         }
-        return () => setAccessToken('')
     }, [userCred])
 
     return (

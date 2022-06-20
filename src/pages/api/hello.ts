@@ -1,13 +1,27 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { auth } from 'backend/utils/firebase';
 import type { NextApiRequest, NextApiResponse } from 'next'
+import protectAPI from 'middleware/protectAPI'
+// type Data = {
+//   name: string
+// }
 
-type Data = {
-  name: string
-}
-
-export default function handler(
+async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
-  res.status(200).json({ name: 'John Doe' })
+
+  if (!req.headers.token) {
+    return res.status(401).json({ error: 'Please include id token' });
+  }
+
+  try {
+    const { uid } = await auth.verifyIdToken(req.headers.token as string);
+    console.log(uid)
+    res.status(200).json({ uid: uid })
+  } catch (error: any) {
+    return res.status(401).json({ error: error.message });
+  }
+
 }
+export default protectAPI(handler);
