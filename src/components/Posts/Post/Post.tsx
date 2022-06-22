@@ -1,17 +1,16 @@
 import { Post } from "@atoms/postsAtom";
 import { Alert, AlertIcon, Box, Button, Divider, Flex, Icon, Spacer, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import Carousel from "@components/Layout/Carousel/Carousel";
+import { auth } from "@firebase/clientApp";
+import useInstagram from "@hooks/useInstagram";
 import usePosts from "@hooks/usePosts";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { BsThreeDots } from "react-icons/bs";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import Contact from "./Contact";
 import MenuModal from "./MenuModal/MenuModal";
-import { httpsCallable } from 'firebase/functions';
-import { auth, firestore, functions } from "@firebase/clientApp";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { collection, doc, getDoc } from "firebase/firestore";
 
 
 interface PostProps {
@@ -20,11 +19,11 @@ interface PostProps {
 }
 
 function PostComponent({ post, userIsCreator }: PostProps) {
-    const [user, loadingUser] = useAuthState(auth)
     const router = useRouter()
     const [loadingDelete, setLoadingDelete] = useState(false)
     const [error, setError] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { shareSingleMedia, loading } = useInstagram()
 
     const { onDeletePost } = usePosts()
 
@@ -125,38 +124,10 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                     </Stack>
                     <Button mx={2} borderRadius='sm' bg='green'
                         onClick={async () => {
-                            const userDocRef = doc(collection(firestore, 'users'), user?.uid)
-                            const userDoc = await getDoc(userDocRef)
-
-                            const instagramId = userDoc.data()?.facebookAcount?.instagramAccountId
                             if (!post.imageUrls?.length) return
-                            const image = encodeURIComponent(post.imageUrls[0])
-                            console.log(image)
-                            //17841451752634556
-                            //109673861780729
-                            const tokenDocRef = doc(collection(firestore, 'tokens'), user?.uid)
-                            const tokenDoc = await getDoc(tokenDocRef)
-                            const accessToken = tokenDoc.data()?.accessToken
-                            const url = `https://graph.facebook.com/v14.0/${instagramId}/media?image_url=${image}&caption=%23BronzFonz&access_token=${accessToken}`
-
-                            const token = await user?.getIdToken()
-                            const res = await fetch(url,
-                                {
-                                    method: 'POST',
-                                }
-                            )
-                            const data = await res.json()
-                            const containerId = data.id
-
-                            const url2 = `https://graph.facebook.com/v14.0/${instagramId}/media_publish?creation_id=${containerId}&access_token=${accessToken}`
-                            const res2 = await fetch(url,
-                                {
-                                    method: 'POST',
-                                }
-                            )
-                            const data2 = await res2.json()
-                            console.log(data2)
+                            await shareSingleMedia(post.imageUrls[0], post.body)
                         }}
+                        isLoading={loading}
                     >
                         Postar
                     </Button>

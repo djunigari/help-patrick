@@ -8,7 +8,7 @@ interface FacebookAccountItemProps {
 }
 
 function FacebookAccountItem({ account }: FacebookAccountItemProps) {
-    const { getInstagramAccountId, loading, instagramAccountId, saveAccountIdToFirebase, saveLoading } = useInstagram(account.id)
+    const { getInstagramAccountId, loading, instagramAccountId, saveAccountIdToFirebase, saveLoading } = useInstagram()
 
     return (
         <Flex align='center' justify='space-between' width='full' p={2}>
@@ -18,14 +18,14 @@ function FacebookAccountItem({ account }: FacebookAccountItemProps) {
                     <Text>
                         {instagramAccountId}
                     </Text>
-                    <Button borderRadius='md' onClick={saveAccountIdToFirebase} isLoading={saveLoading}>
+                    <Button borderRadius='md' onClick={() => saveAccountIdToFirebase(account.id)} isLoading={saveLoading}>
                         Save
                     </Button>
                 </>
             ) : (
                 <Button
                     borderRadius='md'
-                    onClick={getInstagramAccountId}
+                    onClick={() => getInstagramAccountId(account.id)}
                     isLoading={loading}
                 >
                     Instagram Accounts
