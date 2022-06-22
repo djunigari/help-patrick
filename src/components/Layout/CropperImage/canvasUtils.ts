@@ -115,6 +115,6 @@ export async function getRotatedImage(imageSrc: string, rotation = 0): Promise<s
     return new Promise((resolve) => {
         canvas.toBlob((file) => {
             resolve(URL.createObjectURL(file as Blob))
-        }, 'image/png')
+        }, 'image/jpg')
     })
 }

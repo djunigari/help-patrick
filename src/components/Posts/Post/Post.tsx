@@ -9,8 +9,9 @@ import { IoPaperPlaneOutline } from "react-icons/io5";
 import Contact from "./Contact";
 import MenuModal from "./MenuModal/MenuModal";
 import { httpsCallable } from 'firebase/functions';
-import { auth, functions } from "@firebase/clientApp";
+import { auth, firestore, functions } from "@firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { collection, doc, getDoc } from "firebase/firestore";
 
 
 interface PostProps {
@@ -124,18 +125,37 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                     </Stack>
                     <Button mx={2} borderRadius='sm' bg='green'
                         onClick={async () => {
-                            console.log(user)
+                            const userDocRef = doc(collection(firestore, 'users'), user?.uid)
+                            const userDoc = await getDoc(userDocRef)
+
+                            const instagramId = userDoc.data()?.facebookAcount?.instagramAccountId
+                            if (!post.imageUrls?.length) return
+                            const image = encodeURIComponent(post.imageUrls[0])
+                            console.log(image)
+                            //17841451752634556
+                            //109673861780729
+                            const tokenDocRef = doc(collection(firestore, 'tokens'), user?.uid)
+                            const tokenDoc = await getDoc(tokenDocRef)
+                            const accessToken = tokenDoc.data()?.accessToken
+                            const url = `https://graph.facebook.com/v14.0/${instagramId}/media?image_url=${image}&caption=%23BronzFonz&access_token=${accessToken}`
+
                             const token = await user?.getIdToken()
-                            const res = await fetch(`http://localhost:3001/api/facebook`,
+                            const res = await fetch(url,
                                 {
-                                    method: 'GET',
-                                    headers: {
-                                        'token': token as string
-                                    }
+                                    method: 'POST',
                                 }
                             )
                             const data = await res.json()
-                            data.map((item: any) => console.log(item.id))
+                            const containerId = data.id
+
+                            const url2 = `https://graph.facebook.com/v14.0/${instagramId}/media_publish?creation_id=${containerId}&access_token=${accessToken}`
+                            const res2 = await fetch(url,
+                                {
+                                    method: 'POST',
+                                }
+                            )
+                            const data2 = await res2.json()
+                            console.log(data2)
                         }}
                     >
                         Postar

@@ -57,7 +57,7 @@ function useSelectFile() {
             .then(
                 r => r.blob())
             .then(
-                blobFile => new File([blobFile], name, { type: "image/png" })
+                blobFile => new File([blobFile], name, { type: "image/jpg" })
             )
     }
 
