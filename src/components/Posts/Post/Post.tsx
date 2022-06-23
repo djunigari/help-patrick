@@ -1,12 +1,10 @@
 import { Post } from "@atoms/postsAtom";
 import { Alert, AlertIcon, Box, Button, Divider, Flex, Icon, Spacer, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import Carousel from "@components/Layout/Carousel/Carousel";
-import { auth } from "@firebase/clientApp";
 import useInstagram from "@hooks/useInstagram";
 import usePosts from "@hooks/usePosts";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect, useState } from "react";
 import { BsThreeDots } from "react-icons/bs";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import Contact from "./Contact";
@@ -23,7 +21,8 @@ function PostComponent({ post, userIsCreator }: PostProps) {
     const [loadingDelete, setLoadingDelete] = useState(false)
     const [error, setError] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { shareSingleMedia, loading } = useInstagram()
+    const { shareSingleMedia, loading, isRateLimiteOk } = useInstagram()
+    const [isInstagramUsageOk, setIsInstagramUsageOk] = useState(false)
 
     const { onDeletePost } = usePosts()
 
@@ -46,6 +45,10 @@ function PostComponent({ post, userIsCreator }: PostProps) {
         }
         setLoadingDelete(false)
     }
+
+    useEffect(() => {
+        isRateLimiteOk().then(res => setIsInstagramUsageOk(res as boolean))
+    }, [])
 
     return (
         <>
@@ -122,15 +125,17 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                             </Text>
                         ))}
                     </Stack>
-                    <Button mx={2} borderRadius='sm' bg='green'
-                        onClick={async () => {
-                            if (!post.imageUrls?.length) return
-                            await shareSingleMedia(post.imageUrls[0], post.body)
-                        }}
-                        isLoading={loading}
-                    >
-                        Postar
-                    </Button>
+                    {isInstagramUsageOk && (
+                        <Button mx={2} borderRadius='sm' bg='green'
+                            onClick={async () => {
+                                if (!post.imageUrls?.length) return
+                                await shareSingleMedia(post.imageUrls[0], post.body)
+                            }}
+                            isLoading={loading}
+                        >
+                            Postar
+                        </Button>
+                    )}
                 </Flex>
             </Flex >
         </>

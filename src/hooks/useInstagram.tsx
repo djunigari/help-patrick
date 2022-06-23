@@ -1,6 +1,6 @@
 import { auth, firestore } from '@firebase/clientApp'
 import { collection, doc, setDoc } from 'firebase/firestore'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 function useInstagram() {
@@ -37,12 +37,28 @@ function useInstagram() {
         }, { merge: true })
         setSaveLoading(false)
     }
+    const isRateLimiteOk = async () => {
+        if (!user) return
+        const idToken = await user.getIdToken()
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/instagram/check-rate-limit-usage`,
+            {
+                method: 'GET',
+                headers: {
+                    'token': idToken as string,
+                }
+            }
+        )
 
+        return res.json()
+    }
+
+    //Check isRateLimiteOk first after execute share
     const shareSingleMedia = async (imageUrl: string, caption: string) => {
         if (!user) return
         setLoading(true)
+
         const idToken = await user.getIdToken()
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/instagram/share-single`,
+        fetch(`${process.env.NEXT_PUBLIC_URL}/api/instagram/share-single`,
             {
                 method: 'POST',
                 headers: {
@@ -55,8 +71,16 @@ function useInstagram() {
                 })
             }
         )
-        const data = await res.json()
-        console.log(data.id)
+            .then(res => {
+                if (res.ok) {
+                    return res;
+                }
+                throw new Error('error');
+            })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(e => console.log(e.message))
+
         setLoading(false)
     }
 
@@ -66,7 +90,8 @@ function useInstagram() {
         instagramAccountId,
         saveAccountIdToFirebase,
         saveLoading,
-        shareSingleMedia
+        shareSingleMedia,
+        isRateLimiteOk
     }
 }
 
