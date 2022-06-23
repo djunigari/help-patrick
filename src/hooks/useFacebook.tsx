@@ -12,7 +12,7 @@ function useFacebook() {
         if (!user) return
         setLoading(true)
         const idToken = await user.getIdToken()
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/facebook`,
+        const res = await fetch(`/api/facebook`,
             {
                 method: 'GET',
                 headers: {

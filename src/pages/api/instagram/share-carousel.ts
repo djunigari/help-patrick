@@ -1,5 +1,7 @@
 import getAccessToken from '@backend/repositories/GetAccessToken';
-import getInstagramBusinessAccountId from 'backend/services/instagram/GetInstagramBusinessAccountId';
+import getInstagramId from '@backend/repositories/GetInstagramId';
+import shareToFeed from '@backend/services/instagram/Carousel/ShareToFeed';
+
 import { auth } from 'backend/utils/firebase';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -10,11 +12,14 @@ export default async function handler(
     try {
         const { uid } = await auth.verifyIdToken(req.headers.token as string);
         const accessToken = await getAccessToken({ userId: uid })
-        const facebookPageId = req.query.facebookPageId as string
-        const accountId = await getInstagramBusinessAccountId({ facebookPageId, accessToken })
-        res.status(200).json(accountId)
+        const instagramId = await getInstagramId(uid)
+        const { imageUrls, caption } = req.body
+
+        const mediaId = await shareToFeed({ accessToken, instagramId, imageUrls, caption })
+        res.status(200).json(mediaId)
     } catch (error: any) {
-        console.log(error.message)
+        console.error(error.message)
         res.status(500).json(error.message)
     }
 }
+

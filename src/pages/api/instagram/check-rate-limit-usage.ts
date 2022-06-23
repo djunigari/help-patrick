@@ -10,7 +10,7 @@ export default async function handler(
 ) {
     try {
         const { uid } = await auth.verifyIdToken(req.headers.token as string);
-        const accessToken = await getAccessToken(uid)
+        const accessToken = await getAccessToken({ userId: uid })
         const instagramId = await getInstagramId(uid)
         const quatoUsage = await checkingRateLimitUsageOk(instagramId, accessToken)
         if (quatoUsage < 25) return res.status(200).json(true)

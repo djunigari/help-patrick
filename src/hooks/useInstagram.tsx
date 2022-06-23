@@ -13,7 +13,7 @@ function useInstagram() {
         if (!user) return
         setLoading(true)
         const idToken = await user.getIdToken()
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/instagram/account-id?facebookPageId=${facebookAccountId}`,
+        const res = await fetch(`/api/instagram/account-id?facebookPageId=${facebookAccountId}`,
             {
                 method: 'GET',
                 headers: {
@@ -40,7 +40,7 @@ function useInstagram() {
     const isRateLimiteOk = async () => {
         if (!user) return
         const idToken = await user.getIdToken()
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/instagram/check-rate-limit-usage`,
+        const res = await fetch(`/api/instagram/check-rate-limit-usage`,
             {
                 method: 'GET',
                 headers: {
@@ -58,7 +58,7 @@ function useInstagram() {
         setLoading(true)
 
         const idToken = await user.getIdToken()
-        fetch(`${process.env.NEXT_PUBLIC_URL}/api/instagram/share-single`,
+        fetch(`/api/instagram/share-carousel`,
             {
                 method: 'POST',
                 headers: {
@@ -84,6 +84,38 @@ function useInstagram() {
         setLoading(false)
     }
 
+    //Check isRateLimiteOk first after execute share
+    const shareCarouselMedia = async (imageUrls: string[], caption: string) => {
+        if (!user) return
+        setLoading(true)
+
+        const idToken = await user.getIdToken()
+        fetch(`/api/instagram/share-single`,
+            {
+                method: 'POST',
+                headers: {
+                    'token': idToken as string,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    imageUrls: imageUrls,
+                    caption: caption
+                })
+            }
+        )
+            .then(res => {
+                if (res.ok) {
+                    return res;
+                }
+                throw new Error('error');
+            })
+            .then(res => res.json())
+            .then(data => console.log(data))
+            .catch(e => console.log(e.message))
+
+        setLoading(false)
+    }
+
     return {
         getInstagramAccountId,
         loading,
@@ -91,6 +123,7 @@ function useInstagram() {
         saveAccountIdToFirebase,
         saveLoading,
         shareSingleMedia,
+        shareCarouselMedia,
         isRateLimiteOk
     }
 }

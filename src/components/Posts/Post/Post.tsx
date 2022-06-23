@@ -21,7 +21,7 @@ function PostComponent({ post, userIsCreator }: PostProps) {
     const [loadingDelete, setLoadingDelete] = useState(false)
     const [error, setError] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { shareSingleMedia, loading, isRateLimiteOk } = useInstagram()
+    const { shareSingleMedia, shareCarouselMedia, loading, isRateLimiteOk } = useInstagram()
     const [isInstagramUsageOk, setIsInstagramUsageOk] = useState(false)
 
     const { onDeletePost } = usePosts()
@@ -129,7 +129,13 @@ function PostComponent({ post, userIsCreator }: PostProps) {
                         <Button mx={2} borderRadius='sm' bg='green'
                             onClick={async () => {
                                 if (!post.imageUrls?.length) return
-                                await shareSingleMedia(post.imageUrls[0], post.body)
+
+                                if (post.imageUrls.length > 1) {
+                                    await shareCarouselMedia(post.imageUrls, post.body)
+                                } else {
+                                    await shareSingleMedia(post.imageUrls[0], post.body)
+                                }
+
                             }}
                             isLoading={loading}
                         >
