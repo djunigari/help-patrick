@@ -1,10 +1,12 @@
 import { Post } from "@atoms/postsAtom";
 import { Alert, AlertIcon, Box, Button, Divider, Flex, Icon, Spacer, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import Carousel from "@components/Layout/Carousel/Carousel";
+import { auth } from "@firebase/clientApp";
 import useInstagram from "@hooks/useInstagram";
 import usePosts from "@hooks/usePosts";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { BsThreeDots } from "react-icons/bs";
 import { IoPaperPlaneOutline } from "react-icons/io5";
 import Contact from "./Contact";
@@ -17,6 +19,7 @@ interface PostProps {
 }
 
 function PostComponent({ post, userIsCreator }: PostProps) {
+    const [user, userLoading] = useAuthState(auth)
     const router = useRouter()
     const [loadingDelete, setLoadingDelete] = useState(false)
     const [error, setError] = useState(false)
@@ -47,8 +50,9 @@ function PostComponent({ post, userIsCreator }: PostProps) {
     }
 
     useEffect(() => {
-        isRateLimiteOk().then(res => setIsInstagramUsageOk(res as boolean))
-    }, [])
+        if (!userLoading && user) isRateLimiteOk().then(res => setIsInstagramUsageOk(res as boolean))
+        return () => setIsInstagramUsageOk(false)
+    }, [user, userLoading])
 
     return (
         <>

@@ -13,6 +13,7 @@ export default async function handler(
         const accessToken = await getAccessToken({ userId: uid })
         const instagramId = await getInstagramId(uid)
         const quatoUsage = await checkingRateLimitUsageOk(instagramId, accessToken)
+        console.log('checkRateLimitUsage quatoUsage:', quatoUsage)
         if (quatoUsage < 25) return res.status(200).json(true)
         return res.status(200).json(false)
     } catch (error: any) {

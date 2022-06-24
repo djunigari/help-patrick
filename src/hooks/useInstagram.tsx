@@ -48,7 +48,6 @@ function useInstagram() {
                 }
             }
         )
-
         return res.json()
     }
 
@@ -56,9 +55,9 @@ function useInstagram() {
     const shareSingleMedia = async (imageUrl: string, caption: string) => {
         if (!user) return
         setLoading(true)
-
+        console.log('ei')
         const idToken = await user.getIdToken()
-        fetch(`/api/instagram/share-carousel`,
+        fetch(`/api/instagram/share-single`,
             {
                 method: 'POST',
                 headers: {
@@ -88,9 +87,9 @@ function useInstagram() {
     const shareCarouselMedia = async (imageUrls: string[], caption: string) => {
         if (!user) return
         setLoading(true)
-
+        console.log('ok')
         const idToken = await user.getIdToken()
-        fetch(`/api/instagram/share-single`,
+        fetch(`/api/instagram/share-carousel`,
             {
                 method: 'POST',
                 headers: {

@@ -10,6 +10,6 @@ interface ShareToFeedProps {
 
 export default async function shareToFeed({ instagramId, imageUrl, caption, accessToken }: ShareToFeedProps) {
     const containerId = await createContainer(accessToken, instagramId, imageUrl, caption)
-    const mediaId = await publishContainer(instagramId, containerId, accessToken)
-    return mediaId
+    console.log('shareToFeed-single', containerId)
+    return publishContainer(instagramId, containerId, accessToken)
 }

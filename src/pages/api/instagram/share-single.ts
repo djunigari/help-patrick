@@ -15,6 +15,7 @@ export default async function handler(
         const { imageUrl, caption } = req.body
 
         const mediaId = await shareToFeed({ accessToken, instagramId, imageUrl, caption })
+        console.log('share-single mediaId:', mediaId)
         res.status(200).json(mediaId)
     } catch (error: any) {
         console.error(error.message)

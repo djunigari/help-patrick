@@ -13,6 +13,6 @@ export default async function shareToFeed({ instagramId, imageUrls, caption, acc
     const promises = imageUrls.map(async (imageUrl) => await createItemContainer({ accessToken, instagramId, imageUrl }))
     const containerItens = await Promise.all(promises)
     const containerId = await CreateCarouselContainer({ accessToken, instagramId, containerItens, caption })
-    const mediaId = await publishContainer(instagramId, containerId, accessToken)
-    return mediaId
+    console.log('shareToFeed-carousel', containerId)
+    return publishContainer(instagramId, containerId, accessToken)
 }
