@@ -11,6 +11,7 @@ import ContactInput from './PostForm/ContactInput'
 import FilterInputs from './PostForm/FilterInputs'
 import ImageUpload from './PostForm/ImageUpload'
 import TextInput from './PostForm/TextInput'
+import VideoUpload from './PostForm/VideoUpload'
 
 interface NewPostFormProps {
     user: User
@@ -78,6 +79,9 @@ function NewPostForm({ user }: NewPostFormProps) {
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
                     onSelectFile={onSelectFile}
+                />
+                <VideoUpload
+
                 />
                 <ContactInput
                     contactInputs={contact}

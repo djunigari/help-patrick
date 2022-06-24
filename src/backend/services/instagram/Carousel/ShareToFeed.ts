@@ -9,7 +9,6 @@ interface ShareToFeedProps {
     caption: string
 }
 export default async function shareToFeed({ instagramId, imageUrls, caption, accessToken }: ShareToFeedProps) {
-
     const promises = imageUrls.map(async (imageUrl) => await createItemContainer({ accessToken, instagramId, imageUrl }))
     const containerItens = await Promise.all(promises)
     const containerId = await CreateCarouselContainer({ accessToken, instagramId, containerItens, caption })
