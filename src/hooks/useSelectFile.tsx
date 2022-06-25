@@ -4,29 +4,28 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import { ChangeEvent, useEffect, useState } from "react"
 import { v4 as uuid } from "uuid"
 
+export interface SelectedFile {
+    blob: Blob,
+    src: string
+}
+
 function useSelectFile() {
-    const [selectedFiles, setSelectedFiles] = useState<string[]>([])
+    const [selectedFiles, setSelectedFiles] = useState<SelectedFile[]>([])
 
     const onSelectFile = (event: ChangeEvent<HTMLInputElement>) => {
-        const reader = new FileReader()
         if (event.target.files?.[0]) {
-            reader.readAsDataURL(event.target.files[0])
+            const file = event.target.files?.[0]
+            const blob = new Blob([file])
+            const src = URL.createObjectURL(new Blob([file], { type: 'image/jpg' }))
+            // const src = URL.createObjectURL(new Blob([file], { type: 'video/mp4' }))
+            setSelectedFiles([...selectedFiles, { blob, src, }])
         }
-
-        reader.onload = (readerEvent) => {
-            if (readerEvent.target?.result) {
-                const file = readerEvent.target.result as string
-                if (selectedFiles.includes(file)) return
-                setSelectedFiles([...selectedFiles, file])
-            }
-        }
-        event.target.value = ''
     }
 
     const uploadAllFiles = async (postDocRef: DocumentReference) => {
         if (!postDocRef) throw new Error('updateFile error do not have post to upload the image')
         try {
-            const promises = selectedFiles.map(async (file) => await updateFile(file, postDocRef))
+            const promises = selectedFiles.map(async (fileSelected) => await updateFile(fileSelected, postDocRef))
 
             return Promise.all(promises)
         } catch (error: any) {
@@ -34,31 +33,14 @@ function useSelectFile() {
         }
     }
 
-    const updateFile = async (file: string, postDocRef: DocumentReference) => {
-        //store in storage => getDownloadUrl ( return imageUrl)
+    const updateFile = async (selectedFile: SelectedFile, postDocRef: DocumentReference) => {
         if (!postDocRef) throw new Error('updateFile error do not have post to upload the image')
         const imageId = uuid()
         const imageRef = ref(storage, `posts/${postDocRef.id}/images/${imageId}`)
 
-        // await uploadString(imageRef, file, 'data_url')
-        // const downloadUrl = await getDownloadURL(imageRef)
-
-        const blobFile = await getBlobFile(file, imageId)
-        URL.revokeObjectURL(file)
-
-        const uploadResult = await uploadBytes(imageRef, blobFile)
-        const downloadUrl = await getDownloadURL(uploadResult.ref)
-
-        return downloadUrl
-    }
-
-    const getBlobFile = async (url: string, name: string) => {
-        return fetch(url)
-            .then(
-                r => r.blob())
-            .then(
-                blobFile => new File([blobFile], name, { type: "image/jpg" })
-            )
+        URL.revokeObjectURL(selectedFile.src)
+        const uploadResult = await uploadBytes(imageRef, selectedFile.blob)
+        return getDownloadURL(uploadResult.ref)
     }
 
     const cleanFiles = () => {

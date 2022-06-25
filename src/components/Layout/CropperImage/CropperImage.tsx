@@ -1,4 +1,5 @@
 import { Box, Flex, Icon, Text, useDisclosure } from '@chakra-ui/react';
+import { SelectedFile } from '@hooks/useSelectFile';
 import { getOrientation } from 'get-orientation/browser';
 import React, { useEffect, useRef, useState } from 'react';
 import Cropper from 'react-easy-crop';
@@ -17,30 +18,24 @@ const ORIENTATION_TO_ANGLE: tplotOptions = {
     '8': -90,
 }
 
-function readFile(file: Blob): Promise<string | ArrayBuffer | null> {
-    return new Promise((resolve) => {
-        const reader = new FileReader()
-        reader.addEventListener('load', () => resolve(reader.result), false)
-        reader.readAsDataURL(file)
-    })
-}
-
 interface CropperImageProps {
-    selectedFiles: string[]
-    setSelectedFiles: (values: string[]) => void
+    selectedFiles: SelectedFile[]
+    setSelectedFiles: (files: SelectedFile[]) => void
+    onSelectFile: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
+function CropperImage({ selectedFiles, setSelectedFiles, onSelectFile }: CropperImageProps) {
     const selectedFileRef = useRef<HTMLInputElement>(null)
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const [imageSrc, setImageSrc] = useState<string | null>(null)
+    const [selectedFile, setSelectedFile] = useState<SelectedFile | null>(null)
+    const [croppedDataUrl, setCroppedDataUrl] = useState<string | null>(null)
+
     const [crop, setCrop] = useState({ x: 0, y: 0, })
     const [onCropSize, setOnCropSize] = useState({ width: 520, height: 520 })
     const [rotation, setRotation] = useState(0)
     const [zoom, setZoom] = useState(1)
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
-    const [croppedImage, setCroppedImage] = useState<string | null>(null)
 
     const onCropComplete =
         (croppedArea: Area, croppedAreaPixels: Area) => {
@@ -49,13 +44,13 @@ function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
 
     const showCroppedImage = async () => {
         try {
-            const croppedImage = await getCroppedImg(
-                imageSrc!,
+            const croppedDataUrl = await getCroppedImg(
+                selectedFile?.src!,
                 croppedAreaPixels!,
                 rotation
             )
 
-            setCroppedImage(croppedImage)
+            setCroppedDataUrl(croppedDataUrl)
 
             onOpen()
         } catch (e) {
@@ -63,35 +58,52 @@ function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
         }
     }
 
+    const cancelCroppedImage = () => {
+        setCroppedDataUrl(null)
+        setSelectedFile(null)
+        setRotation(0)
+        setZoom(1)
+        setCrop({ x: 0, y: 0, })
+    }
+
     const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0]
-            let imageDataUrl = await readFile(file)
+            let blob = new Blob([file])
+            let src = URL.createObjectURL(new Blob([file], { type: 'image/jpg' }))
+            // let imageDataUrl = await readFile(file)
 
             // apply rotation if needed
             const orientation = await getOrientation(file)
             const rotation = ORIENTATION_TO_ANGLE[orientation]
+
             if (rotation) {
-                imageDataUrl = await getRotatedImage(imageDataUrl as string, rotation)
+                const dataUrl = await getRotatedImage(src, rotation)
+                URL.revokeObjectURL(src)
+                src = dataUrl
+                blob = await (await fetch(dataUrl)).blob();
             }
 
-            setImageSrc(imageDataUrl as string)
+            setSelectedFile({ blob, src, })
         }
     }
 
-    const addImage = () => {
-        if (croppedImage) setSelectedFiles([...selectedFiles, croppedImage])
-        setImageSrc(null)
+    const addImage = async () => {
+        if (croppedDataUrl) {
+            const blob = await (await fetch(croppedDataUrl)).blob();
+            setSelectedFiles([...selectedFiles, { blob, src: croppedDataUrl }])
+        }
+        cancelCroppedImage()
         onClose()
     }
 
     useEffect(() => {
-        if (!isOpen) setCroppedImage(null)
+        if (!isOpen) setCroppedDataUrl(null)
     }, [isOpen])
 
     return (
         <>
-            {imageSrc ? (
+            {selectedFile?.src ? (
                 <>
                     <Box
                         position='relative'
@@ -100,7 +112,7 @@ function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
                         bg='#333'
                     >
                         <Cropper
-                            image={imageSrc}
+                            image={selectedFile?.src}
                             crop={crop}
                             rotation={rotation}
                             zoom={zoom}
@@ -118,9 +130,10 @@ function CropperImage({ selectedFiles, setSelectedFiles }: CropperImageProps) {
                         rotation={rotation}
                         setRotation={setRotation}
                         showCroppedImage={showCroppedImage}
+                        cancelCroppedImage={cancelCroppedImage}
                     />
                     <ImgDialog
-                        img={croppedImage as string}
+                        img={croppedDataUrl as string}
                         isOpen={isOpen}
                         onClose={onClose}
                         addImage={addImage}

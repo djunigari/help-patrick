@@ -1,5 +1,5 @@
 import { Flex, Grid, GridItem, Icon, Image, Text } from "@chakra-ui/react"
-import { ChangeEvent } from "react"
+import { SelectedFile } from "@hooks/useSelectFile"
 import { FaTrashAlt } from "react-icons/fa"
 
 interface ImageUploadProps {
@@ -7,12 +7,11 @@ interface ImageUploadProps {
     setImages?: (images: string[]) => void
     removedImages?: string[]
     setRemovedImages?: (images: string[]) => void
-    selectedFiles: string[]
-    setSelectedFiles: (values: string[]) => void
-    onSelectFile: (event: ChangeEvent<HTMLInputElement>) => void
+    selectedFiles: SelectedFile[]
+    setSelectedFiles: (fileSelecteds: SelectedFile[]) => void
 }
 
-function ImageUpload({ images, setImages, removedImages, setRemovedImages, selectedFiles, setSelectedFiles, onSelectFile }: ImageUploadProps) {
+function ImageUpload({ images, setImages, removedImages, setRemovedImages, selectedFiles, setSelectedFiles }: ImageUploadProps) {
     return (
         <Grid templateColumns='repeat(3, 1fr)' gap={1}>
             {images?.map(file => (
@@ -45,10 +44,10 @@ function ImageUpload({ images, setImages, removedImages, setRemovedImages, selec
                 </GridItem>
             ))}
 
-            {selectedFiles?.map(file => (
-                <GridItem key={file}>
+            {selectedFiles?.map((file, i) => (
+                <GridItem key={i}>
                     <Image
-                        src={file}
+                        src={file.src}
                         fit='cover'
                         width='100%'
                         height={{ base: '100px', md: '200px' }}
@@ -64,7 +63,7 @@ function ImageUpload({ images, setImages, removedImages, setRemovedImages, selec
                         fontWeight='semibold'
                         cursor='pointer'
                         _hover={{ bg: 'red.100', color: 'gray.400' }}
-                        onClick={() => setSelectedFiles(selectedFiles.filter(item => item !== file))}
+                        onClick={() => setSelectedFiles(selectedFiles.filter(item => item.src !== file.src))}
                     >
                         <Icon as={FaTrashAlt} mr={2} />
                         <Text>Remover</Text>

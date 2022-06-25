@@ -8,9 +8,10 @@ interface MenuCropperProps {
     rotation: number
     setRotation: (val: number) => void
     showCroppedImage: () => void
+    cancelCroppedImage: () => void
 }
 
-function MenuCropper({ zoom, setZoom, rotation, setRotation, showCroppedImage }: MenuCropperProps) {
+function MenuCropper({ zoom, setZoom, rotation, setRotation, showCroppedImage, cancelCroppedImage }: MenuCropperProps) {
     return (
         <Stack
             direction={{ base: 'column', sm: 'row' }}
@@ -42,6 +43,13 @@ function MenuCropper({ zoom, setZoom, rotation, setRotation, showCroppedImage }:
                 onClick={showCroppedImage}
             >
                 Adicionar
+            </Button>
+            <Button
+                borderRadius='md'
+                bg='purple.600'
+                onClick={cancelCroppedImage}
+            >
+                Cancel
             </Button>
         </Stack>
     )

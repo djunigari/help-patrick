@@ -71,14 +71,13 @@ function NewPostForm({ user }: NewPostFormProps) {
     return (
         <Flex direction='column' bg='white' borderRadius={4} mt={2} boxShadow="lg">
 
-            <CropperImage selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
+            <CropperImage selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} onSelectFile={onSelectFile} />
 
             <Stack p={4} direction='column' spacing={4}>
 
                 <ImageUpload
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
-                    onSelectFile={onSelectFile}
                 />
                 <VideoUpload
 

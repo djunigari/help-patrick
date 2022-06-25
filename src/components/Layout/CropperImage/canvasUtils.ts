@@ -35,7 +35,7 @@ export async function getCroppedImg(
     pixelCrop: Area,
     rotation = 0,
     flip = { horizontal: false, vertical: false }
-): Promise<string | null> {
+) {
     const image: HTMLImageElement = await createImage(imageSrc)
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
@@ -86,14 +86,10 @@ export async function getCroppedImg(
     // return canvas.toDataURL('image/jpeg');
 
     // As a blob
-    return new Promise((resolve, reject) => {
-        canvas.toBlob((file) => {
-            resolve(URL.createObjectURL(file as Blob))
-        }, 'image/jpeg')
-    })
+    return canvas.toDataURL()
 }
 
-export async function getRotatedImage(imageSrc: string, rotation = 0): Promise<string | null> {
+export async function getRotatedImage(imageSrc: string, rotation = 0) {
     const image: HTMLImageElement = await createImage(imageSrc)
     const canvas = document.createElement('canvas')
     const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d')
@@ -112,9 +108,5 @@ export async function getRotatedImage(imageSrc: string, rotation = 0): Promise<s
     ctx?.rotate((rotation * Math.PI) / 180)
     ctx?.drawImage(image, -image.width / 2, -image.height / 2)
 
-    return new Promise((resolve) => {
-        canvas.toBlob((file) => {
-            resolve(URL.createObjectURL(file as Blob))
-        }, 'image/jpg')
-    })
+    return canvas.toDataURL()
 }
