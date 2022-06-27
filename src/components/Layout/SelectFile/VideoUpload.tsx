@@ -7,19 +7,12 @@ import { useEffect, useRef, useState } from 'react'
 import { v4 as uuid } from "uuid"
 
 interface VideoUploadProps {
-    post: Post
+    file: File
 }
 
-function VideoUpload() {
-    const [file, setFile] = useState<File | null>(null)
+function VideoUpload({ file }: VideoUploadProps) {
     const [videoSrc, setVideoSrc] = useState('')
     const videoRef = useRef(null)
-
-    const onSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files?.[0]) {
-            setFile(event.target.files[0])
-        }
-    }
 
     const submitFileForProcessing = async () => {
 
@@ -42,14 +35,6 @@ function VideoUpload() {
 
     return (
         <Flex direction='column' marginBottom="1rem">
-            <InputGroup marginBottom="2rem">
-                <Input
-                    type="file"
-                    id="input"
-                    accept="audio/*, video/*"
-                    onChange={onSelectFile}
-                />
-            </InputGroup>
             <Box bg="lightgrey" marginBottom="1rem">
                 <AspectRatio maxH="100%" ratio={16 / 9}>
                     <video

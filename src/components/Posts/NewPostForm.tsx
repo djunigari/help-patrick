@@ -1,6 +1,6 @@
 import { Contact, Post } from '@atoms/postsAtom'
 import { Alert, AlertIcon, Button, Flex, Stack, Text } from '@chakra-ui/react'
-import CropperImage from '@components/Layout/CropperImage/CropperImage'
+import SelectFile from '@components/Layout/SelectFile/SelectFile'
 import { firestore } from '@firebase/clientApp'
 import { User } from 'firebase/auth'
 import { addDoc, collection, deleteDoc, DocumentReference, serverTimestamp, setDoc, Timestamp } from 'firebase/firestore'
@@ -11,7 +11,6 @@ import ContactInput from './PostForm/ContactInput'
 import FilterInputs from './PostForm/FilterInputs'
 import ImageUpload from './PostForm/ImageUpload'
 import TextInput from './PostForm/TextInput'
-import VideoUpload from './PostForm/VideoUpload'
 
 interface NewPostFormProps {
     user: User
@@ -37,7 +36,7 @@ function NewPostForm({ user }: NewPostFormProps) {
             subcategory: ''
         })
 
-    const { selectedFiles, setSelectedFiles, onSelectFile, uploadAllFiles, cleanFiles } = useSelectFile()
+    const { selectedFiles, setSelectedFiles, uploadAllFiles, cleanFiles } = useSelectFile()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
@@ -71,16 +70,13 @@ function NewPostForm({ user }: NewPostFormProps) {
     return (
         <Flex direction='column' bg='white' borderRadius={4} mt={2} boxShadow="lg">
 
-            <CropperImage selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} onSelectFile={onSelectFile} />
+            <SelectFile selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
 
             <Stack p={4} direction='column' spacing={4}>
 
                 <ImageUpload
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
-                />
-                <VideoUpload
-
                 />
                 <ContactInput
                     contactInputs={contact}

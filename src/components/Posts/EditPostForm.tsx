@@ -1,6 +1,6 @@
 import { Contact, Post } from '@atoms/postsAtom'
 import { Alert, AlertIcon, Button, Flex, Stack, Text } from '@chakra-ui/react'
-import CropperImage from '@components/Layout/CropperImage/CropperImage'
+import CropperImage from '@components/Layout/SelectFile/SelectFile'
 import { firestore, storage } from '@firebase/clientApp'
 import { User } from 'firebase/auth'
 import { collection, doc, DocumentReference, setDoc } from 'firebase/firestore'
@@ -25,7 +25,7 @@ function EditPostForm({ user, oldVersionPost }: EditPostFormProps) {
     const [post, setPost] = useState<Post>({ ...oldVersionPost })
     const [images, setImages] = useState<string[]>([])
 
-    const { selectedFiles, setSelectedFiles, onSelectFile, uploadAllFiles } = useSelectFile()
+    const { selectedFiles, setSelectedFiles, uploadAllFiles } = useSelectFile()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
 
@@ -84,7 +84,7 @@ function EditPostForm({ user, oldVersionPost }: EditPostFormProps) {
                     setImages={setImages}
                     selectedFiles={selectedFiles}
                     setSelectedFiles={setSelectedFiles}
-                    onSelectFile={onSelectFile}
+
                 />
                 <ContactInput
                     contactInputs={contact}
