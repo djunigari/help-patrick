@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import protectAPI from '@middleware/protectAPI';
 import { auth } from 'backend/utils/firebase';
-import type { NextApiRequest, NextApiResponse } from 'next'
-import protectAPI from 'middleware/protectAPI'
-import { useId } from '@chakra-ui/react';
+import type { NextApiRequest, NextApiResponse } from 'next';
+
 // type Data = {
 //   name: string
 // }

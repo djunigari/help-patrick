@@ -21,7 +21,7 @@
     "baseUrl": "src",
     "paths": {
       "@middleware/*": [
-        "middleware/*"
+        "frontend/middleware/*"
       ],
       "@backend/*": [
         "backend/*"
@@ -30,28 +30,28 @@
         "lib/*"
       ],
       "@atoms/*": [
-        "atoms/*"
+        "frontend/atoms/*"
       ],
       "@hooks/*": [
-        "hooks/*"
+        "frontend/hooks/*"
       ],
       "@firebase/*": [
-        "firebase/*"
+        "frontend/firebase/*"
       ],
       "@components/*": [
-        "components/*"
+        "frontend/components/*"
       ],
       "@api/*": [
-        "pages/api/*"
+        "frontend/pages/api/*"
       ],
       "@styles/*": [
-        "styles/*"
+        "frontend/styles/*"
       ],
       "@context/*": [
-        "data/context/*"
+        "frontend/data/context/*"
       ],
       "@model/*": [
-        "model/*"
+        "core/models/*"
       ],
       "@public/*": [
         "../public/*"
